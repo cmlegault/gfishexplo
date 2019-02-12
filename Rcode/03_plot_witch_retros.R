@@ -34,12 +34,14 @@ asap3 <- dget(paste0(".\\rundir\\", asapcmultfnames[3], "_000.rdat"))
 
 years <- seq(asap$parms$styr, asap$parms$endyr)
 nyears <- asap$parms$nyears
-tsdf <- data.frame(Year = rep(years, 8),
+tsdf <- data.frame(Year = rep(years, 16),
                    Source = rep(c(rep("Base", nyears), 
-                              paste("Change Year", rep(bestres$ChangeYear, each = nyears))), 2),
-                   metric = rep(c("SSB", "F"), each = (nyears * 4)),
+                              paste("Change Year", rep(bestres$ChangeYear, each = nyears))), 4),
+                   metric = rep(c("SSB", "F", "Recruits", "Catch"), each = (nyears * 4)),
                    value = c(asap$SSB, asap1$SSB, asap2$SSB, asap3$SSB,
-                             asap$F.report, asap1$F.report, asap2$F.report, asap3$F.report))
+                             asap$F.report, asap1$F.report, asap2$F.report, asap3$F.report,
+                             asap$N.age[,1], asap1$N.age[,1], asap2$N.age[,1], asap3$N.age[,1],
+                             asap$catch.obs, asap1$catch.obs, asap2$catch.obs, asap3$catch.obs))
 
 tsplot <- ggplot(tsdf, aes(x=Year, y=value, color=Source)) +
   geom_point() +
