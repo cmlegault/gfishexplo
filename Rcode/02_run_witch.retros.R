@@ -59,7 +59,8 @@ ifelse(min(abs(res3[,4])) < 0.05, "OK", "Need more runs")
 
 # combine results into one csv file
 res <- rbind(res1, res2, res3)
-write.csv(res, file="witch_retro_res.csv", row.names=F)
+write.csv(res, file="witch_retro_res.csv", row.names=FALSE)
+write.csv(res, file="..\\witch\\witch_retro_res.csv", row.names=FALSE)
 
 # return working directory to starting directory
 setwd(base.dir)
