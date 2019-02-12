@@ -46,7 +46,8 @@ tsplot <- ggplot(tsdf, aes(x=Year, y=value, color=Source)) +
   geom_line() +
   expand_limits(y=0) +
   facet_wrap(~ metric, scales="free_y") +
-  theme_bw()
+  theme_bw() +
+  theme(legend.position = "bottom")
 
 print(tsplot)
 ggsave(".\\witch\\tsplot.png", tsplot)
