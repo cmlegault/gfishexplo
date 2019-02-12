@@ -32,6 +32,7 @@ asap1 <- dget(paste0(".\\rundir\\", asapcmultfnames[1], "_000.rdat"))
 asap2 <- dget(paste0(".\\rundir\\", asapcmultfnames[2], "_000.rdat"))
 asap3 <- dget(paste0(".\\rundir\\", asapcmultfnames[3], "_000.rdat"))
 
+# plot time series of catch, F, recruits, and SSB
 years <- seq(asap$parms$styr, asap$parms$endyr)
 nyears <- asap$parms$nyears
 tsdf <- data.frame(Year = rep(years, 16),
@@ -53,3 +54,23 @@ tsplot <- ggplot(tsdf, aes(x=Year, y=value, color=Source)) +
 
 print(tsplot)
 ggsave(".\\witch\\tsplot.png", tsplot)
+
+# compare fleet selectivity in final year
+nages <- asap$parms$nages
+ages <- seq(1, nages)
+seldf <- data.frame(Age = rep(ages, 4),
+                    Source = c(rep("Base", nages), 
+                               paste("Change Year", rep(bestres$ChangeYear, each = nages))),
+                    Selectivity = c(asap$fleet.sel.mats[[1]][nyears, ],
+                                    asap1$fleet.sel.mats[[1]][nyears, ],
+                                    asap2$fleet.sel.mats[[1]][nyears, ],
+                                    asap3$fleet.sel.mats[[1]][nyears, ]) )
+
+selplot <- ggplot(seldf, aes(x=Age, y=Selectivity, color=Source)) +
+  geom_point() +
+  geom_line() +
+  expand_limits(y=0) +
+  theme_bw()
+
+print(selplot)
+ggsave(".\\witch\\selplot.png", selplot)
