@@ -31,9 +31,11 @@ run_retro_mults <- function(asap.fname,n.peels,year.range,cmult.vals,mmult.vals,
         ssbrho <- calc_SSBrho(fname, n.peels)
         res.vec <- c(change.year,cmult,mmult,ssbrho)
         res <- rbind(res,res.vec)
-        if (save.files == F) clean_up_files(fname)
+        if (save.files == FALSE) clean_up_files(fname)
       }
     }
   }
+  colnames(res) <- c("ChangeYear", "Cmult", "Mmult", "SSBrho")
+  rownames(res) <- NULL
   return(res)
 } 
