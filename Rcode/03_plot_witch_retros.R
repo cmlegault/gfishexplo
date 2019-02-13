@@ -109,6 +109,48 @@ cbind(asapF40, asap1F40, asap2F40, asap3F40)
 dev.off()
 
 # do short term projections under F40%
-calcShortTermProj <- function(asap.name, NAA, recruits, Fmult, nyears){
-  
+calcShortTermProj <- function(asap.name, startNAA, recruits, Fmult, nyears){
+  nages <- length(startNAA)
+  vals <- read.csv(paste0(".\\witch\\AGEPRO_ave_params_", asap.name, ".csv"))
+  MAA <- as.numeric(vals[vals$X == "M.age", 2:(nages+1)])
+  matAA <- as.numeric(vals[vals$X == "mat.age", 2:(nages+1)])
+  WAA <- as.numeric(vals[vals$X == "catch.waa", 2:(nages+1)])
+  selx <- as.numeric(vals[vals$X == "sel.age", 2:(nages+1)])
+  FAA <- Fmult * selx
+  ZAA <- MAA + FAA
+  ctot <- rep(NA, nyears)
+  NAA <- matrix(NA, nrow=(nyears+1), ncol=nages)
+  NAA[1, ] <- startNAA
+  NAA[2:(nyears+1), 1] <- recruits
+  for (iyear in 1:nyears){
+    for (iage in 1:(nages-1)){
+      NAA[iyear+1, iage+1] <- NAA[iyear, iage] * exp(-ZAA[iage])
+    }
+    NAA[iyear+1, nages] <- NAA[iyear+1, nages] * exp(-ZAA[nages])
+    ctot[iyear] <- sum(NAA[iyear, ] * WAA* FAA * (1 - exp(-ZAA)) / ZAA)
+  }
+  return(ctot)
 }
+
+nprojyears <- 5
+stp <- calcShortTermProj(asapfname, asap$N.age[nyears, ], mean(asap$N.age[, 1]), asapF40, nprojyears)
+ssbrho <- res$SSBrho[1]
+Nrhoadj <- asap$N.age[nyears, ] / (1 + ssbrho)
+stprhoadj <- calcShortTermProj(asapfname, Nrhoadj, mean(asap$N.age[, 1]), asapF40, nprojyears)
+stp1 <- calcShortTermProj(asapcmultfnames[1], asap1$N.age[nyears, ], mean(asap1$N.age[, 1]), asap1F40, nprojyears)
+stp2 <- calcShortTermProj(asapcmultfnames[2], asap2$N.age[nyears, ], mean(asap2$N.age[, 1]), asap2F40, nprojyears)
+stp3 <- calcShortTermProj(asapcmultfnames[3], asap3$N.age[nyears, ], mean(asap3$N.age[, 1]), asap3F40, nprojyears)
+
+stpdf <- data.frame(Source = rep(c("Base", "Base rho adj", asapcmultfnames), each=nprojyears),
+                    Year = rep(1:nprojyears, 5),
+                    Catch = c(stp, stprhoadj, stp1, stp2, stp3))
+
+stpplot <- ggplot(stpdf, aes(x=Year, y=Catch, color=Source)) +
+  geom_point() +
+  geom_line() +
+  expand_limits(y=0) +
+  theme_bw()
+print(stpplot)
+ggsave(".\\witch\\short_term_projections.png", stpplot)
+
+# make another plot for adjusting catch according to catch multiplier
