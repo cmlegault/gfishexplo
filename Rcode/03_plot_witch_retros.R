@@ -81,5 +81,27 @@ ggsave(".\\witch\\selplot.png", selplot)
 # get retro plots from ASAPplot (don't know why rho values don't print correctly)
 windows(record = TRUE)
 PlotRetroWrapper(".\\rundir", paste0(asapfname, "_000"), asap, TRUE, ".\\witch\\", "png")
-dev.off()
 
+# calculate F40% from ASAPplot
+# do it for each of the four asap runs
+a1 <- list(asap.name = asapfname)
+PlotSPRtable(asap, a1, 5, TRUE, ".\\witch\\", "png")
+sprtab <- read.csv(paste0(".\\witch\\SPR.Target.Table_", asapfname, ".csv"))
+asapF40 <- sprtab$F..SPR.[sprtab$X.SPR == 0.40]
+
+a11 <- list(asap.name = asapcmultfnames[1])
+PlotSPRtable(asap1, a11, 5, TRUE, ".\\witch\\", "png")
+sprtab1 <- read.csv(paste0(".\\witch\\SPR.Target.Table_", asapcmultfnames[1], ".csv"))
+asap1F40 <- sprtab1$F..SPR.[sprtab1$X.SPR == 0.40]
+
+a12 <- list(asap.name = asapcmultfnames[2])
+PlotSPRtable(asap2, a12, 5, TRUE, ".\\witch\\", "png")
+sprtab2 <- read.csv(paste0(".\\witch\\SPR.Target.Table_", asapcmultfnames[2], ".csv"))
+asap2F40 <- sprtab2$F..SPR.[sprtab2$X.SPR == 0.40]
+
+a13 <- list(asap.name = asapcmultfnames[3])
+PlotSPRtable(asap3, a13, 5, TRUE, ".\\witch\\", "png")
+sprtab3 <- read.csv(paste0(".\\witch\\SPR.Target.Table_", asapcmultfnames[3], ".csv"))
+asap3F40 <- sprtab3$F..SPR.[sprtab3$X.SPR == 0.40]
+
+cbind(asapF40, asap1F40, asap2F40, asap3F40)
