@@ -105,3 +105,10 @@ sprtab3 <- read.csv(paste0(".\\witch\\SPR.Target.Table_", asapcmultfnames[3], ".
 asap3F40 <- sprtab3$F..SPR.[sprtab3$X.SPR == 0.40]
 
 cbind(asapF40, asap1F40, asap2F40, asap3F40)
+
+dev.off()
+
+# do short term projections under F40%
+calcShortTermProj <- function(asap.name, NAA, recruits, Fmult, nyears){
+  
+}
