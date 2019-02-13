@@ -1,6 +1,9 @@
 # plot_witch_retros.R
 # make some summary and comparison plots for the base run and 3 catch multiplier runs with no retro
 
+# uncomment following line if need to install latest version of ASAPplots
+# devtools::install_github("cmlegault/ASAPplots", build_vignettes = TRUE)
+library("ASAPplots")
 library("ggplot2")
 library("dplyr")
 
@@ -74,3 +77,9 @@ selplot <- ggplot(seldf, aes(x=Age, y=Selectivity, color=Source)) +
 
 print(selplot)
 ggsave(".\\witch\\selplot.png", selplot)
+
+# get retro plots from ASAPplot (don't know why rho values don't print correctly)
+windows(record = TRUE)
+PlotRetroWrapper(".\\rundir", paste0(asapfname, "_000"), asap, TRUE, ".\\witch\\", "png")
+dev.off()
+
