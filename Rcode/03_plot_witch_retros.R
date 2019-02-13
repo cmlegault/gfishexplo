@@ -154,3 +154,4 @@ print(stpplot)
 ggsave(".\\witch\\short_term_projections.png", stpplot)
 
 # make another plot for adjusting catch according to catch multiplier
+# improve the names shown in the legend
