@@ -132,7 +132,7 @@ calcShortTermProj <- function(asap.name, startNAA, recruits, Fmult, nyears){
   return(ctot)
 }
 
-nprojyears <- 5
+nprojyears <- 3
 stp <- calcShortTermProj(asapfname, asap$N.age[nyears, ], mean(asap$N.age[, 1]), asapF40, nprojyears)
 ssbrho <- res$SSBrho[1]
 Nrhoadj <- asap$N.age[nyears, ] / (1 + ssbrho)
@@ -145,13 +145,12 @@ stpdf <- data.frame(Source = rep(c("Base", "Base rho adj", asapcmultfnames), eac
                     Year = rep(1:nprojyears, 5),
                     Catch = c(stp, stprhoadj, stp1, stp2, stp3))
 
-stpplot <- ggplot(stpdf, aes(x=Year, y=Catch, color=Source)) +
-  geom_point() +
-  geom_line() +
-  expand_limits(y=0) +
+stpplot <- ggplot(stpdf, aes(x=Year, y=Catch, fill=Source)) +
+  geom_bar(stat="identity", position=position_dodge()) +
   theme_bw()
 print(stpplot)
 ggsave(".\\witch\\short_term_projections.png", stpplot)
 
 # make another plot for adjusting catch according to catch multiplier
+# make another plot showing catch ratio relative to base or catch in terminal year (better)
 # improve the names shown in the legend
