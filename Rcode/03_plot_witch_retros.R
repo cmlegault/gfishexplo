@@ -166,5 +166,5 @@ stpplotadj <- ggplot(filter(stpdf, Adjusted == TRUE), aes(x=Year, y=Catch, fill=
             position=position_dodge(0.9)) +
   theme_bw()
 print(stpplotadj)
-ggsave(".\\witch\\short_term_projections_adjusted.png", stpplot)
+ggsave(".\\witch\\short_term_projections_adjusted.png", stpplotadj)
 
