@@ -141,16 +141,30 @@ stp1 <- calcShortTermProj(asapcmultfnames[1], asap1$N.age[nyears, ], mean(asap1$
 stp2 <- calcShortTermProj(asapcmultfnames[2], asap2$N.age[nyears, ], mean(asap2$N.age[, 1]), asap2F40, nprojyears)
 stp3 <- calcShortTermProj(asapcmultfnames[3], asap3$N.age[nyears, ], mean(asap3$N.age[, 1]), asap3F40, nprojyears)
 
-stpdf <- data.frame(Source = rep(c("Base", "Base rho adj", asapcmultfnames), each=nprojyears),
-                    Year = rep(1:nprojyears, 5),
-                    Catch = c(stp, stprhoadj, stp1, stp2, stp3))
+cmult <- as.numeric(substr(asapcmultfnames, 7, 8)) / 10
+labnames <- paste0(substr(asapcmultfnames, 2, 5), " Cx",cmult) 
+stpdf <- data.frame(Source = rep(c("Base",  labnames, 
+                                   "Base rho adj", paste(labnames, " C adj")), each=nprojyears),
+                    Year = rep(asap$parms$endyr + 1:nprojyears, 8),
+                    Catch = c(stp, stp1, stp2, stp3, 
+                              stprhoadj, stp1/cmult[1], stp2/cmult[2], stp3/cmult[3]),
+                    Adjusted = rep(c(FALSE, TRUE), each = (4 * nprojyears)))
 
-stpplot <- ggplot(stpdf, aes(x=Year, y=Catch, fill=Source)) +
+stpplot <- ggplot(filter(stpdf, Adjusted == FALSE), aes(x=Year, y=Catch, fill=Source)) +
   geom_bar(stat="identity", position=position_dodge()) +
+  ggtitle(paste(asap$parms$endyr, " Catch = ", round(asap$catch.obs[nyears], 0), " mt")) +
+  geom_text(aes(label=round(Catch, 0)), vjust=1.6, color="white", size=3.5, 
+            position=position_dodge(0.9)) +
   theme_bw()
 print(stpplot)
 ggsave(".\\witch\\short_term_projections.png", stpplot)
 
-# make another plot for adjusting catch according to catch multiplier
-# make another plot showing catch ratio relative to base or catch in terminal year (better)
-# improve the names shown in the legend
+stpplotadj <- ggplot(filter(stpdf, Adjusted == TRUE), aes(x=Year, y=Catch, fill=Source)) +
+  geom_bar(stat="identity", position=position_dodge()) +
+  ggtitle("When catch adjustments are made to quota") +
+  geom_text(aes(label=round(Catch, 0)), vjust=1.6, color="white", size=3.5, 
+            position=position_dodge(0.9)) +
+  theme_bw()
+print(stpplotadj)
+ggsave(".\\witch\\short_term_projections_adjusted.png", stpplot)
+
