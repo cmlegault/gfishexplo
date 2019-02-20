@@ -38,3 +38,10 @@ Note to self: need to add text here...
 Note to self: need to add text here...
 
 ![adjusted catch advice](./witch/short_term_projections_adjusted.png)
+
+Note to self: some things to discuss
+* not using current year catch in projections for simplicity
+* return to first question answer of yes, maybe
+* think about repeating for other stocks
+* figure out what to keep in witch dir and clean out rundir (save somewhere until sure don't need things)
+* what else???
