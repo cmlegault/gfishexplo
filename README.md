@@ -44,4 +44,5 @@ Note to self: some things to discuss
 * return to first question answer of yes, maybe
 * think about repeating for other stocks
 * figure out what to keep in witch dir and clean out rundir (save somewhere until sure don't need things)
+* M and other potential sources of retros
 * what else???
