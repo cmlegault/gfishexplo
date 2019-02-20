@@ -52,8 +52,7 @@ f40df <- data.frame(Source = c("Base", sourcenames),
 
 f40plot <- ggplot(f40df, aes(x=Source, y=F40, fill=Source)) +
   geom_bar(stat="identity") +
-  geom_text(aes(label=round(F40, 4)), vjust=1.6, color="white", size=3.5, 
-            position=position_dodge(0.9)) +
+  geom_text(aes(label=round(F40, 4)), vjust=1.6, color="white", size=3.5) + 
   theme_bw()
 
 print(f40plot)
@@ -93,7 +92,6 @@ stp2 <- calcShortTermProj(asapcmultfnames[2], asap2$N.age[nyears, ], mean(asap2$
 stp3 <- calcShortTermProj(asapcmultfnames[3], asap3$N.age[nyears, ], mean(asap3$N.age[, 1]), asap3F40, nprojyears)
 
 cmult <- as.numeric(substr(asapcmultfnames, 7, 8)) / 10
-#labnames <- paste0(substr(asapcmultfnames, 2, 5), " Cx",cmult) 
 stpdf <- data.frame(Source = rep(c("Base",  sourcenames, 
                                    "Base rho adj", paste(sourcenames, " C adj")), each=nprojyears),
                     Year = rep(asap$parms$endyr + 1:nprojyears, 8),
