@@ -7,8 +7,7 @@ source(".\\Rcode\\03_plot_witch_retros.R")
 nages <- asap$parms$nages
 ages <- seq(1, nages)
 seldf <- data.frame(Age = rep(ages, 4),
-                    Source = c(rep("Base", nages), 
-                               paste("Change Year", rep(bestres$ChangeYear, each = nages))),
+                    Source = rep(rep(c("Base", sourcenames), each=nages), 4),
                     Selectivity = c(asap$fleet.sel.mats[[1]][nyears, ],
                                     asap1$fleet.sel.mats[[1]][nyears, ],
                                     asap2$fleet.sel.mats[[1]][nyears, ],
@@ -48,7 +47,7 @@ asap3F40 <- sprtab3$F..SPR.[sprtab3$X.SPR == 0.40]
 
 dev.off()
 
-f40df <- data.frame(Source = c("Base", paste0("Change Year ", bestres$ChangeYear)),
+f40df <- data.frame(Source = c("Base", sourcenames),
                     F40 = c(asapF40, asap1F40, asap2F40, asap3F40))
 
 f40plot <- ggplot(f40df, aes(x=Source, y=F40, fill=Source)) +
@@ -94,9 +93,9 @@ stp2 <- calcShortTermProj(asapcmultfnames[2], asap2$N.age[nyears, ], mean(asap2$
 stp3 <- calcShortTermProj(asapcmultfnames[3], asap3$N.age[nyears, ], mean(asap3$N.age[, 1]), asap3F40, nprojyears)
 
 cmult <- as.numeric(substr(asapcmultfnames, 7, 8)) / 10
-labnames <- paste0(substr(asapcmultfnames, 2, 5), " Cx",cmult) 
-stpdf <- data.frame(Source = rep(c("Base",  labnames, 
-                                   "Base rho adj", paste(labnames, " C adj")), each=nprojyears),
+#labnames <- paste0(substr(asapcmultfnames, 2, 5), " Cx",cmult) 
+stpdf <- data.frame(Source = rep(c("Base",  sourcenames, 
+                                   "Base rho adj", paste(sourcenames, " C adj")), each=nprojyears),
                     Year = rep(asap$parms$endyr + 1:nprojyears, 8),
                     Catch = c(stp, stp1, stp2, stp3, 
                               stprhoadj, stp1/cmult[1], stp2/cmult[2], stp3/cmult[3]),
