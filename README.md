@@ -23,3 +23,18 @@ These modifications to the catch data changed the time series of estimates for S
 
 ![time series](./witch/tsplot.png)
 
+Note to self: need to add text here...
+
+![selectivity](./witch/selplot.png)
+
+Note to self: need to add text here...
+
+![F40](./witch/F40.png)
+
+Note to self: need to add text here...
+
+![catch advice](./witch/short_term_projections.png)
+
+Note to self: need to add text here...
+
+![adjusted catch advice](./witch/short_term_projections_adjusted.png)
