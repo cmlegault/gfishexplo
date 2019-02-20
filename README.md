@@ -3,7 +3,7 @@ Groundfish Explorations
 
 ## Question: can adding recent catch allow increase in quota? Yes, maybe.
 
-Premise is that missing catch, due to underestimated discards and/or improperly labelled landings could be the main source of retrospective patterns in recent groundfish stock assessments. This work explores this concept with the hypothesis that ABCs could be increased if this is true to offset management measures such as 100% observer coverage or dockside monitoring. 
+Premise is that missing catch, due to underestimated discards, discarding of legal-sized fish, and improperly labelled landings, could be the main source of retrospective patterns in recent groundfish stock assessments. This work explores this concept with the hypothesis that ABCs could be increased if this is true to offset management measures such as 100% observer coverage or dockside monitoring. 
 
 ## What was done?
 
