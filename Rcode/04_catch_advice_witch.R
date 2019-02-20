@@ -1,4 +1,4 @@
-source("03_plot_witch_retros.R")
+source(".\\Rcode\\03_plot_witch_retros.R")
 
 # 04_catch_advice_witch.R
 # calculate catch advice under F40% for base, rho adjusted, and three catch multiplier scenarios
@@ -25,6 +25,7 @@ ggsave(".\\witch\\selplot.png", selplot)
 
 # calculate F40% from ASAPplot
 # do it for each of the four asap runs
+windows(record=TRUE)
 a1 <- list(asap.name = asapfname)
 PlotSPRtable(asap, a1, 5, TRUE, ".\\witch\\", "png")
 sprtab <- read.csv(paste0(".\\witch\\SPR.Target.Table_", asapfname, ".csv"))
@@ -45,9 +46,19 @@ PlotSPRtable(asap3, a13, 5, TRUE, ".\\witch\\", "png")
 sprtab3 <- read.csv(paste0(".\\witch\\SPR.Target.Table_", asapcmultfnames[3], ".csv"))
 asap3F40 <- sprtab3$F..SPR.[sprtab3$X.SPR == 0.40]
 
-cbind(asapF40, asap1F40, asap2F40, asap3F40)
-
 dev.off()
+
+f40df <- data.frame(Source = c("Base", paste0("Change Year ", bestres$ChangeYear)),
+                    F40 = c(asapF40, asap1F40, asap2F40, asap3F40))
+
+f40plot <- ggplot(f40df, aes(x=Source, y=F40, fill=Source)) +
+  geom_bar(stat="identity") +
+  geom_text(aes(label=round(F40, 4)), vjust=1.6, color="white", size=3.5, 
+            position=position_dodge(0.9)) +
+  theme_bw()
+
+print(f40plot)
+ggsave(".\\witch\\F40.png", f40plot)
 
 # do short term projections under F40%
 calcShortTermProj <- function(asap.name, startNAA, recruits, Fmult, nyears){

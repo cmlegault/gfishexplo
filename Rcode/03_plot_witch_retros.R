@@ -61,4 +61,5 @@ ggsave(".\\witch\\tsplot.png", tsplot)
 # get retro plots from ASAPplot (don't know why rho values don't print correctly)
 windows(record = TRUE)
 PlotRetroWrapper(".\\rundir", paste0(asapfname, "_000"), asap, TRUE, ".\\witch\\", "png")
+dev.off()
 
