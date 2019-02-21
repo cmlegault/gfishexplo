@@ -42,6 +42,7 @@ Note to self: need to add text here...
 Note to self: some things to discuss
 * not using current year catch in projections for simplicity
 * return to first question answer of yes, maybe
+* difficulty of age comp diff from total catch (e.g., only small discards or only big fish missing)
 * think about repeating for other stocks
 * figure out what to keep in witch dir and clean out rundir (save somewhere until sure don't need things)
 * M and other potential sources of retros
