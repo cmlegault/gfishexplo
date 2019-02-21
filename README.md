@@ -46,4 +46,5 @@ Note to self: some things to discuss
 * think about repeating for other stocks
 * figure out what to keep in witch dir and clean out rundir (save somewhere until sure don't need things)
 * M and other potential sources of retros
+* run ASAPplots completely to get the retro plots with rho values shown
 * what else???
