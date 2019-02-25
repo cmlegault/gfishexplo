@@ -11,7 +11,7 @@ A stock assessment that exhibited a strong retrospective pattern was used as a s
 
 ### Case Study 1: Witch Flounder (SARC 62, 2016)
 
-The benchmark assessment for witch flounder at SARC 62 rejected the proposed ASAP model due to a strong retrospective pattern (https://www.nefsc.noaa.gov/publications/crd/crd1701/, https://www.nefsc.noaa.gov/publications/crd/crd1703/, and https://www.nefsc.noaa.gov/saw/saw62/sarc62_panel_summary_report.pdf). An ASAP file similar to the final run examined in SARC 62 was used as the starting point for this exercise. This assessment formulation used years 1982-2015, ages 1-11+, one fleet with three selectivity blocks, and five survey tuning indices (NESFS spring and fall scaled by the catchability study, ASMFC summer, and ME/NH spring and fall surveys). This assessment exhibited a strong retrospective pattern with Mohn's rho values of 0.64 and -0.46 for SSB and F, respectively.
+The benchmark assessment for witch flounder at SARC 62 rejected the proposed ASAP model due to a strong retrospective pattern (https://www.nefsc.noaa.gov/publications/crd/crd1701/, https://www.nefsc.noaa.gov/publications/crd/crd1703/, and https://www.nefsc.noaa.gov/saw/saw62/sarc62_panel_summary_report.pdf). An ASAP file similar to the final run examined in SARC 62 was used as the starting point for this exercise. This assessment formulation used years 1982-2015, ages 1-11+, one fleet with three selectivity blocks, and five survey tuning indices (NESFS spring and fall scaled by the catchability study, ASMFC summer, and ME/NH spring and fall surveys). This assessment exhibited a strong retrospective pattern with Mohn's rho values of -0.46, 0.64, and 0.39 for F, SSB, and recruitment, respectively.
 
 ![base retro](./witch/retro_F_SSB_R.png)
 
@@ -23,15 +23,15 @@ These modifications to the catch data changed the time series of estimates for S
 
 ![time series](./witch/tsplot.png)
 
-Note to self: need to add text here...
+Despite the large changes in catch under the three change scenarios, the estimates of fishery selectivity in the final year of the assessment are nearly identical. This is because the catch at age proportions are not changed in these scenarios, the proportions at age in the original fit are assumed to represent the missing catch. This does not have to be the case, but it is the simplest assumption to make.
 
 ![selectivity](./witch/selplot.png)
 
-Note to self: need to add text here...
+Since the selectivity at age is nearly identical, and the weights, maturity, and natural mortality vectors at age are identical across the four scenarios, the estimates of F40% are nearly identical. F40% is the F that reduces spawning stock biomass per recruit to 40% of the unexploited amount. It was the basis for the F reference point for this stock when an analytical assessment was used. 
 
 ![F40](./witch/F40.png)
 
-Note to self: need to add text here...
+For simplicities sake, the short term projections for the four cases use the respective F40% value for three years. The typical current year catch is not included in these projections.  
 
 ![catch advice](./witch/short_term_projections.png)
 
