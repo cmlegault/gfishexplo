@@ -27,14 +27,22 @@ rhoplot <- ggplot(res, aes(x=Cmult, y=SSBrho, color=as.factor(ChangeYear))) +
 print(rhoplot)
 ggsave(".\\witch\\rhoplot.png", rhoplot)
 
-# identify the four asap runs and get the rdat files
+# identify the four asap runs
 asapfname <- "y2010c10m10"
 asapcmultfnames <- paste0("y", bestres$ChangeYear, "c", bestres$Cmult * 10, "m10")
 sourcenames <- paste0(bestres$ChangeYear, " Cx", bestres$Cmult)
-asap <- dget(paste0(".\\rundir\\", asapfname, "_000.rdat"))
-asap1 <- dget(paste0(".\\rundir\\", asapcmultfnames[1], "_000.rdat"))
-asap2 <- dget(paste0(".\\rundir\\", asapcmultfnames[2], "_000.rdat"))
-asap3 <- dget(paste0(".\\rundir\\", asapcmultfnames[3], "_000.rdat"))
+
+# copy the four base rdat files to witch directory
+shell(paste0("copy .\\rundir\\", asapfname, "_000.rdat .\\witch\\"))
+shell(paste0("copy .\\rundir\\", asapcmultfnames[1], "_000.rdat .\\witch\\"))
+shell(paste0("copy .\\rundir\\", asapcmultfnames[2], "_000.rdat .\\witch\\"))
+shell(paste0("copy .\\rundir\\", asapcmultfnames[3], "_000.rdat .\\witch\\"))
+
+# read the rdat files
+asap <- dget(paste0(".\\witch\\", asapfname, "_000.rdat"))
+asap1 <- dget(paste0(".\\witch\\", asapcmultfnames[1], "_000.rdat"))
+asap2 <- dget(paste0(".\\witch\\", asapcmultfnames[2], "_000.rdat"))
+asap3 <- dget(paste0(".\\witch\\", asapcmultfnames[3], "_000.rdat"))
 
 # plot time series of catch, F, recruits, and SSB
 years <- seq(asap$parms$styr, asap$parms$endyr)
