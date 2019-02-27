@@ -8,12 +8,18 @@ library("ggplot2")
 library("dplyr")
 
 res <- read.csv(".\\witch\\witch_retro_res.csv")
+resfleet <- read.csv(".\\witch\\witch_retro_res_fleet.csv")
 
 bestres <- res %>%
   mutate(absrho = abs(SSBrho)) %>%
   group_by(ChangeYear) %>%
   filter(absrho == min(absrho))
   
+bestresfleet <- resfleet %>%
+  mutate(absrho = abs(SSBrho)) %>%
+  group_by(Source) %>%
+  filter(absrho == min(absrho))
+
 # show SSB rho as function of catch multiplier for the three change years
 rhoplot <- ggplot(res, aes(x=Cmult, y=SSBrho, color=as.factor(ChangeYear))) +
   geom_point() +
@@ -26,6 +32,17 @@ rhoplot <- ggplot(res, aes(x=Cmult, y=SSBrho, color=as.factor(ChangeYear))) +
 
 print(rhoplot)
 ggsave(".\\witch\\rhoplot.png", rhoplot)
+
+rhoplotfleet <- ggplot(resfleet, aes(x=cmult, y=SSBrho, color=Source)) +
+  geom_point() +
+  geom_line() +
+  geom_point(data = bestresfleet, shape = 1, size=5) +
+  geom_hline(yintercept = 0, linetype="dashed") +
+  xlab("Catch Multiplier") +
+  theme_bw()
+
+print(rhoplotfleet)
+ggsave(".\\witch\\rhoplotfleet.png", rhoplotfleet)
 
 # identify the four asap runs
 asapfname <- "y2010c10m10"
@@ -77,4 +94,6 @@ shell(paste0("copy .\\rundir\\retro_F_SSB_R.png .\\witch\\retro_F_SSB_R_", asapc
 PlotRetroWrapper(".\\rundir", paste0(asapcmultfnames[3], "_000"), asap3, TRUE, ".\\rundir\\", "png")
 shell(paste0("copy .\\rundir\\retro_F_SSB_R.png .\\witch\\retro_F_SSB_R_", asapcmultfnames[3],".png"))
 dev.off()
+
+
 
