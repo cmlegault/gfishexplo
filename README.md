@@ -20,9 +20,9 @@ This strong retrospective pattern can be eliminated in many different ways. For 
 ![rho vs catch mults](./witch/rhoplot.png)
 
 Click on the following links to see the retrospective plots for:
-* Change year 2000 https://https://github.com/cmlegault/gfishexplo/witch/retro_F_SSB_R_y2000c50m10.png
-* Change year 2005 https://https://github.com/cmlegault/gfishexplo/witch/retro_F_SSB_R_y2005c30m10.png
-* Change year 2010 https://https://github.com/cmlegault/gfishexplo/witch/retro_F_SSB_R_y2010c25m10.png
+* Change year 2000 https://github.com/cmlegault/gfishexplo/witch/retro_F_SSB_R_y2000c50m10.png
+* Change year 2005 https://github.com/cmlegault/gfishexplo/witch/retro_F_SSB_R_y2005c30m10.png
+* Change year 2010 https://github.com/cmlegault/gfishexplo/witch/retro_F_SSB_R_y2010c25m10.png
 
 These modifications to the catch data changed the time series of estimates for SSB, F, and recruits, as expected. As seen in the top left panel below, the catch time series changed abruptly for the three modified assessments with the 2000 change year resulting in catches much higher than observed in earlier years in the early 2000s and recent catches similar to historical amounts. The 2005 change year time series has a spike in catch in 2005 above historical amounts, but the other values within the previously observed range, and all the modified catches for the 2010 change year case are within the range of previously observed catches. The model accounts for these changed catches by both increasing the population and increasing the fishing mortality rate in recent years, although the SSB is nearly identical in 2015 under the 2010 change year scenario to the base case, meaning only the F increased in that year. The F decreases a few years before the modifed catches in each case relative to the base case due to the population having to increase to allow the higher catches later, which requires recruitment to be higher before the catch increases as well. So the changes to the assessment estimates are not limited to the years of changed catch, but instead impact a number of years prior to the change year as well.
 
