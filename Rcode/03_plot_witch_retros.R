@@ -68,6 +68,13 @@ ggsave(".\\witch\\tsplot.png", tsplot)
 
 # get retro plots from ASAPplot 
 windows(record = TRUE)
-PlotRetroWrapper(".\\rundir", paste0(asapfname, "_000"), asap, TRUE, ".\\witch\\", "png")
+PlotRetroWrapper(".\\rundir", paste0(asapfname, "_000"), asap, TRUE, ".\\rundir\\", "png")
+shell(paste0("copy .\\rundir\\retro_F_SSB_R.png .\\witch\\retro_F_SSB_R_", asapfname,".png"))
+PlotRetroWrapper(".\\rundir", paste0(asapcmultfnames[1], "_000"), asap1, TRUE, ".\\rundir\\", "png")
+shell(paste0("copy .\\rundir\\retro_F_SSB_R.png .\\witch\\retro_F_SSB_R_", asapcmultfnames[1],".png"))
+PlotRetroWrapper(".\\rundir", paste0(asapcmultfnames[2], "_000"), asap2, TRUE, ".\\rundir\\", "png")
+shell(paste0("copy .\\rundir\\retro_F_SSB_R.png .\\witch\\retro_F_SSB_R_", asapcmultfnames[2],".png"))
+PlotRetroWrapper(".\\rundir", paste0(asapcmultfnames[3], "_000"), asap3, TRUE, ".\\rundir\\", "png")
+shell(paste0("copy .\\rundir\\retro_F_SSB_R.png .\\witch\\retro_F_SSB_R_", asapcmultfnames[3],".png"))
 dev.off()
 
