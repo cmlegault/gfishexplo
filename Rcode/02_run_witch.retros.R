@@ -27,7 +27,7 @@ my.mults <- c(1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0)
 
 # catch multipliers (takes a little over 10 minutes to run)
 res1 <- run_retro_mults(asap.fname=my.asap.fname,
-                        n.peels=7,
+                        n.peels=n.peels,
                         year.range=my.year.range,
                         cmult.vals=my.mults,
                         mmult.vals=1,
@@ -39,7 +39,7 @@ ifelse(min(abs(res1[,4])) < 0.05, "OK", "Need more runs")
 # set another break point annd search over same multipliers
 my.year.range2 <- c(2005, 2005)
 res2 <- run_retro_mults(asap.fname=my.asap.fname,
-                        n.peels=7,
+                        n.peels=n.peels,
                         year.range=my.year.range2,
                         cmult.vals=my.mults,
                         mmult.vals=1,
@@ -49,7 +49,7 @@ ifelse(min(abs(res2[,4])) < 0.05, "OK", "Need more runs")
 # final break point for catch multipliers
 my.year.range3 <- c(2000, 2000)
 res3 <- run_retro_mults(asap.fname=my.asap.fname,
-                        n.peels=7,
+                        n.peels=n.peels,
                         year.range=my.year.range3,
                         cmult.vals=my.mults,
                         mmult.vals=1,
@@ -61,6 +61,42 @@ ifelse(min(abs(res3[,4])) < 0.05, "OK", "Need more runs")
 res <- rbind(res1, res2, res3)
 write.csv(res, file="witch_retro_res.csv", row.names=FALSE)
 write.csv(res, file="..\\witch\\witch_retro_res.csv", row.names=FALSE)
+
+################################################
+# now handle the two fleet approach for change year = 2010
+
+my.year.range <- c(2010, 2010)
+my.fleet.mults <- c(1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0)
+base.rho <- res[1, 4]
+
+# Young added catch (ages 2-5 all fully selected, other ages 0.1 selectivity)
+my.fleet.name1 <- "YOUNG_FLEET.DAT"
+shell(paste0("copy ..\\", my.dir, my.fleet.name1, " ."))
+resfleet1 <- run_retro_mults2(asap.fname=my.fleet.name1,
+                        n.peels=n.peels,
+                        year.range=my.year.range,
+                        cmult.vals=my.fleet.mults,
+                        case.name="Young",
+                        save.files=TRUE)
+
+# Old added catch (ages 9-11+ fully selected, other ages zero selectivity)
+my.fleet.name2 <- "OLD_FLEET.DAT"
+shell(paste0("copy ..\\", my.dir, my.fleet.name2, " ."))
+resfleet2 <- run_retro_mults2(asap.fname=my.fleet.name2,
+                              n.peels=n.peels,
+                              year.range=my.year.range,
+                              cmult.vals=my.fleet.mults,
+                              case.name="Old",
+                              save.files=TRUE)
+
+# make data frame of results
+resfleet <- data.frame(Source = c(rep("2010 Cx2.5", 9), rep("2010 Young", 9), rep("2010 Old", 9)),
+                       Year = rep(2010, 27),
+                       cmult = rep(c(1, my.fleet.mults), 3),
+                       SSBrho = c(res1$SSBrho, base.rho, resfleet1[,3], base.rho, resfleet2[,3]))
+resfleet
+write.csv(resfleet, file="witch_retro_res_fleet.csv", row.names=FALSE)
+write.csv(resfleet, file="..\\witch\\witch_retro_res_fleet.csv", row.names=FALSE)
 
 # return working directory to starting directory
 setwd(base.dir)

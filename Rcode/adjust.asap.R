@@ -28,7 +28,7 @@ adjust_asap2 <- function(asap.dat,year,cmult){
   catch.mat.adj <- catch.mat[[1]][[2]] * 0 # start with all zeros
   nc <- length(catch.mat.adj[1,])
   year.count <- 1:length(years)
-  catch.mat.adj[year.count[years >= year],nc] <- base.catch.mat[year.count[years >= year],nc] * cmult
+  catch.mat.adj[year.count[years >= year],nc] <- base.catch.mat[year.count[years >= year],nc] * (cmult - 1) # note that one subtracted from cmult so has same meaning as adjust_asap (e.g., cmult=2 means total catch has doubled by including it once in real fleet and once in added fleet) - do not use cmult=1 here!
   asap.dat.adj <- asap.dat
   asap.dat.adj$dat[names(asap.dat$dat) == "CAA_mats"][[1]][[2]] <- catch.mat.adj
   return(asap.dat.adj)

@@ -19,7 +19,7 @@ This strong retrospective pattern can be eliminated in many different ways. For 
 
 ![rho vs catch mults](./witch/rhoplot.png)
 
-Click on the following links to see the retrospective plots for:
+Click on the following links to see the selected retrospective plots for:
 * Change year 2000 https://github.com/cmlegault/gfishexplo/blob/master/witch/retro_F_SSB_R_y2000c50m10.png
 * Change year 2005 https://github.com/cmlegault/gfishexplo/blob/master/witch/retro_F_SSB_R_y2005c30m10.png
 * Change year 2010 https://github.com/cmlegault/gfishexplo/blob/master/witch/retro_F_SSB_R_y2010c25m10.png

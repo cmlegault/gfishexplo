@@ -2,7 +2,7 @@
 # change year is first year in second period
 # catch and M multipliers applied to second period
 # returns SSB rho from retrospective analysis for all combinations of change year, C and M mults
-run_retro_mults <- function(asap.fname,n.peels,year.range,cmult.vals,mmult.vals,save.files=F){
+run_retro_mults <- function(asap.fname,n.peels,year.range,cmult.vals,mmult.vals,save.files=FALSE){
   res <- matrix(NA, nrow=0, ncol=4)
   year.vals <- year.range[1]:year.range[2]
   n.years <- length(year.vals)
@@ -39,3 +39,40 @@ run_retro_mults <- function(asap.fname,n.peels,year.range,cmult.vals,mmult.vals,
   rownames(res) <- NULL
   return(res)
 } 
+
+# second version to use two fleets approach with fixed selectivity
+# returns SSB rho from retrospective analysis for all combinations of change year, C and M mults
+run_retro_mults2 <- function(asap.fname,n.peels,year.range,cmult.vals,case.name,save.files=FALSE){
+  res <- matrix(NA, nrow=0, ncol=3)
+  year.vals <- year.range[1]:year.range[2]
+  n.years <- length(year.vals)
+  n.cmults <- length(cmult.vals)
+
+  asap.dat <- read.asap3.dat.file(asap.fname)
+  terminal.year <- as.numeric(asap.dat$dat[1]) + as.numeric(asap.dat$dat[2]) - 1
+  retro.first.year <- terminal.year - n.peels
+  
+  # loop through change years, cmults, mmults
+  for (iy in 1:n.years){
+    change.year <- year.vals[iy]
+    for (ic in 1:n.cmults){
+      cmult <- cmult.vals[ic]
+      
+      asap.dat.adj <- adjust_asap2(asap.dat,change.year,cmult)
+      fname <- paste0(case.name, "_y", change.year, "c", cmult * 10, ".dat")
+      header.text <- paste0(case.name, " year=", change.year, ", catch mult=", cmult)
+      print(header.text)
+      write.asap3.dat.file(fname,asap.dat.adj,header.text)
+      
+      shell(paste("ASAPRETRO.exe", fname, retro.first.year), intern=TRUE)
+      ssbrho <- calc_SSBrho(fname, n.peels)
+      res.vec <- c(change.year,cmult,ssbrho)
+      res <- rbind(res,res.vec)
+      if (save.files == FALSE) clean_up_files(fname)
+    }
+  }
+  colnames(res) <- c("ChangeYear", "Cmult", "SSBrho")
+  rownames(res) <- rep(case.name, length(res[,1]))
+  return(res)
+} 
+
