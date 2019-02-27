@@ -63,9 +63,10 @@ write.csv(res, file="witch_retro_res.csv", row.names=FALSE)
 write.csv(res, file="..\\witch\\witch_retro_res.csv", row.names=FALSE)
 
 ################################################
-# now handle the two fleet approach for change year = 2010
+# now handle the two fleet approach for change year = 2005
+# note: encountered problems with convergence with change year was 2010 due to fleet disappearing in retros
 
-my.year.range <- c(2010, 2010)
+my.year.range <- c(2005, 2005)
 my.fleet.mults <- c(1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0)
 base.rho <- res[1, 4]
 
@@ -90,10 +91,10 @@ resfleet2 <- run_retro_mults2(asap.fname=my.fleet.name2,
                               save.files=TRUE)
 
 # make data frame of results
-resfleet <- data.frame(Source = c(rep("2010 Cx2.5", 9), rep("2010 Young", 9), rep("2010 Old", 9)),
-                       Year = rep(2010, 27),
+resfleet <- data.frame(Source = c(rep("2005 Cx3", 9), rep("2005 Young", 9), rep("2005 Old", 9)),
+                       Year = rep(2005, 27),
                        cmult = rep(c(1, my.fleet.mults), 3),
-                       SSBrho = c(res1$SSBrho, base.rho, resfleet1[,3], base.rho, resfleet2[,3]))
+                       SSBrho = c(res2$SSBrho, base.rho, resfleet1[,3], base.rho, resfleet2[,3]))
 resfleet
 write.csv(resfleet, file="witch_retro_res_fleet.csv", row.names=FALSE)
 write.csv(resfleet, file="..\\witch\\witch_retro_res_fleet.csv", row.names=FALSE)
@@ -113,8 +114,8 @@ nyears <- 34
 
 for (i in 1:8){
   cmult <- my.fleet.mults[i]
-  fnamey <- paste0("Young_y2010c", cmult*10, "_000.rdat")
-  fnameo <- paste0("Old_y2010c", cmult*10, "_000.rdat")
+  fnamey <- paste0("Young_y2005c", cmult*10, "_000.rdat")
+  fnameo <- paste0("Old_y2005c", cmult*10, "_000.rdat")
   asapy <- dget(paste0(".\\rundir\\", fnamey))
   asapo <- dget(paste0(".\\rundir\\", fnameo))
   thisdf <- data.frame(source = c(rep("Young", nyears), rep("Old", nyears)),
