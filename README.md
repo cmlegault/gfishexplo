@@ -50,7 +50,7 @@ The story seems quite straight forward so far, but what if the missing catch has
 
 Catch multipliers were searched for the two scenarios in a similar manner to above except in the new runs there is a second fleet with catch instead of just changing the amount of catch in the original fleet. This allows ASAP to remove fish according to the assumed selectivity pattern for the second fleet and still estimate selectivity for the original fleet. The retrospective peels did not consistently converge in the two new cases due to the radically different catch at age removals occuring, resulting in non-smooth changes in the Mohn's rho for SSB as the amount of missing catch increased. However, multipliers were found that essentially eliminated the retrospective pattern (denoted by the circled points). 
 
-![rhoplotfleet](rhoplotfleet.png)
+![rhoplotfleet](./witch/rhoplotfleet.png)
 
 Click on the following links to see the selected retrospective plots for:
 * Change year 2000 https://github.com/cmlegault/gfishexplo/blob/master/witch/retro_F_SSB_R_Old2005c20.png
@@ -58,21 +58,21 @@ Click on the following links to see the selected retrospective plots for:
 
 These modifications to the catch data again changed the time series of estimates for SSB, F, and recruits, as expected. Note the 2005 Cx3 and 2005 Youngx3 scenarios are identical for the catch plot, but differ for F, recruits, and SSB, showing the importance of the selectivity pattern associated with the missing catch.
 
-![ftsplot](ftsplot.png)
+![ftsplot](./witch/ftsplot.png)
 
 Add selectivity text and plot here...
 
 Add F40 text here...
 
-![F40fleet](F40fleet.png)
+![F40fleet](./witch/F40fleet.png)
 
 Add short term projections text here...
 
-![short_term_projections_fleet](short_term_projections_fleet.png)
+![short_term_projections_fleet](./witch/short_term_projections_fleet.png)
 
 Add adjusted short term projections text here...
 
-![short_term_projections_fleet_adjusted](short_term_projections_fleet_adjusted.png)
+![short_term_projections_fleet_adjusted](./witch/short_term_projections_fleet_adjusted.png)
 
 ## Concluding thoughts
 
