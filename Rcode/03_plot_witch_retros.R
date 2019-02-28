@@ -38,11 +38,11 @@ rhoplot <- ggplot(res, aes(x=Cmult, y=SSBrho, color=as.factor(ChangeYear))) +
 print(rhoplot)
 ggsave(".\\witch\\rhoplot.png", rhoplot)
 
-rhoplotfleet <- ggplot(resfleet, aes(x=cmult, y=SSBrho, color=Source)) +
+rhoplotfleet <- ggplot(filter(resfleet, Source != "2005 Cx3"), aes(x=cmult, y=SSBrho, color=Source)) +
   geom_point() +
   geom_line() +
-  geom_point(data = bestresfleet, shape = 1, size=5) +
-  scale_color_manual(values = my.col[c(2, 4, 5)]) +
+  geom_point(data = filter(bestresfleet, Source != "2005 Cx3"), shape = 1, size=5) +
+  scale_color_manual(values = my.col[c(4, 5)]) +
   geom_hline(yintercept = 0, linetype="dashed") +
   xlab("Catch Multiplier") +
   theme_bw()
@@ -130,6 +130,10 @@ PlotRetroWrapper(".\\rundir", paste0(asapcmultfnames[2], "_000"), asap2, TRUE, "
 shell(paste0("copy .\\rundir\\retro_F_SSB_R.png .\\witch\\retro_F_SSB_R_", asapcmultfnames[2],".png"))
 PlotRetroWrapper(".\\rundir", paste0(asapcmultfnames[3], "_000"), asap3, TRUE, ".\\rundir\\", "png")
 shell(paste0("copy .\\rundir\\retro_F_SSB_R.png .\\witch\\retro_F_SSB_R_", asapcmultfnames[3],".png"))
+PlotRetroWrapper(".\\rundir", paste0(asapfleetfnames[1], "_000"), asap4, TRUE, ".\\rundir\\", "png")
+shell(paste0("copy .\\rundir\\retro_F_SSB_R.png .\\witch\\retro_F_SSB_R_", asapfleetfnames[1],".png"))
+PlotRetroWrapper(".\\rundir", paste0(asapfleetfnames[2], "_000"), asap5, TRUE, ".\\rundir\\", "png")
+shell(paste0("copy .\\rundir\\retro_F_SSB_R.png .\\witch\\retro_F_SSB_R_", asapfleetfnames[2],".png"))
 dev.off()
 
 

@@ -46,12 +46,40 @@ When stocks exhibit strong retrospective patterns, as is the case for this witch
 
 ![adjusted catch advice](./witch/short_term_projections_adjusted.png)
 
+The story seems quite straight forward so far, but what if the missing catch has a different age composition than the modeled catch? For example, the missing catch could be due to discarding of predominantly young fish or due to not reporting catch of old fish that is sold on the black market. This complicates the picture quite a bit. For starters, there has to be some basis for setting the selectivity pattern for the missing catch, since by definition there cannot be sampling of catch that is not seen. For demonstration purposes, two scenarios were created based on missing catch starting in 2005. The Young scenario sets the selectivity at age for an added fleet to 1.0 for ages 2, 3, 4, and 5 and sets selectivity for the remaining ages (1, 6-11+) to 0.1. The Old scenario sets the selectivity at age for an added fleet to 1.0 for ages 9, 10, and 11+ and set selectivity for the remaining ages (1-8) to 0.0. These two cases will be compared with the Base case and the 2005 Cx3 case to demonstrate the importance of the selectivity associated with the missing catch for a fixed change year. Note the colors for the Base and 2005 Cx3 scenarios are the same as in the plots above to facilitate comparisons.
+
+Catch multipliers were searched for the two scenarios in a similar manner to above except in the new runs there is a second fleet with catch instead of just changing the amount of catch in the original fleet. This allows ASAP to remove fish according to the assumed selectivity pattern for the second fleet and still estimate selectivity for the original fleet. The retrospective peels did not consistently converge in the two new cases due to the radically different catch at age removals occuring, resulting in non-smooth changes in the Mohn's rho for SSB as the amount of missing catch increased. However, multipliers were found that essentially eliminated the retrospective pattern (denoted by the circled points). 
+
+![rhoplotfleet](rhoplotfleet.png)
+
+Click on the following links to see the selected retrospective plots for:
+* Change year 2000 https://github.com/cmlegault/gfishexplo/blob/master/witch/retro_F_SSB_R_Old2005c20.png
+* Change year 2005 https://github.com/cmlegault/gfishexplo/blob/master/witch/retro_F_SSB_R_Young2005c30.png
+
+These modifications to the catch data again changed the time series of estimates for SSB, F, and recruits, as expected. Note the 2005 Cx3 and 2005 Youngx3 scenarios are identical for the catch plot, but differ for F, recruits, and SSB, showing the importance of the selectivity pattern associated with the missing catch.
+
+![ftsplot](ftsplot.png)
+
+Add selectivity text and plot here...
+
+Add F40 text here...
+
+![F40fleet](F40fleet.png)
+
+Add short term projections text here...
+
+![short_term_projections_fleet](short_term_projections_fleet.png)
+
+Add adjusted short term projections text here...
+
+![short_term_projections_fleet_adjusted](short_term_projections_fleet_adjusted.png)
+
 ## Concluding thoughts
 
 * The witch flounder example demonstrates that there are multiple ways to eliminate the retrospective pattern due to missing catch, with the amount of missing catch depending on when the change starts and the age distribution of the missing catch relative to the observed catch. Generally, there is some potential to increase the quota under the assumption that missing catch was the only source of the retrospective pattern, but the amount of increase is generally less than the amount of catch needed to eliminate the retrospective, and the amount of catch varies depending on when it starts and its age distribution. So there is not a simple relationship that can be used between the size fo the retrospective pattern observed and the amount of quota increase that is possible.
 * Returning the witch flounder catch time series, there are some obvious spikes and unusual patterns in all three catch multiplier scenarios relative to the base case. If additional information was available, or it was thought that large sudden changes in catch were unlikely, then it might be possible to select a single year to assume when the change in catch occurred. Alternatively, and more likely, there could be some sort of ramp up into the missing catch associated with missing catch starting slow and building to a large amount over time as incentives for it increased. This would further complicate the relationship between the amount of retrospective pattern and whether additional quota could be assocaited with eliminating missing catch.
 * As populations decrease, the variability in the population associated with natural mortality would most likely increase, making natural mortality changes a possible source of retrospective patterns as well. If natural mortality is in fact the only source of the retrospective pattern, then there is no basis for increasing the quota due to eliminating the missing catch.
 
-Note to self: some things to discuss
+Note to self: 
 * think about repeating for other stocks
 * figure out what to keep in witch dir and clean out rundir (save somewhere until sure don't need things)

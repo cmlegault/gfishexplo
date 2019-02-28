@@ -124,7 +124,7 @@ stp5 <- calcShortTermProj(asapfleetfnames[2], asap5$N.age[nyears, ], mean(asap5$
 
 cmult <- as.numeric(substr(asapcmultfnames, 7, 8)) / 10
 stpdf <- data.frame(Source = rep(c("Base",  sourcenames, 
-                                   "Base rho adj", paste(sourcenames, " C adj")), each=nprojyears),
+                                   "Base rho adj", paste0(sourcenames, " C adj")), each=nprojyears),
                     Year = rep(asap$parms$endyr + 1:nprojyears, 8),
                     Catch = c(stp, stp1, stp2, stp3, 
                               stprhoadj, stp1/cmult[1], stp2/cmult[2], stp3/cmult[3]),
@@ -150,4 +150,31 @@ stpplotadj <- ggplot(filter(stpdf, Adjusted == TRUE), aes(x=Year, y=Catch, fill=
 print(stpplotadj)
 ggsave(".\\witch\\short_term_projections_adjusted.png", stpplotadj)
 
+fcmult <- bestresfleet$cmult[2:3]
+stpfdf <- data.frame(Source = rep(c("Base", sourcenames[2], fleetnames,
+                                    "Base rho adj", paste0(c(sourcenames[2], fleetnames), " C adj")),
+                                  each=nprojyears),
+                     Year = rep(asap$parms$endyr + 1:nprojyears, 8),
+                     Catch = c(stp, stp2, stp4, stp5, 
+                               stprhoadj, stp2/cmult[2], stp4/fcmult[1], stp5/fcmult[2]),
+                     Adjusted = rep(c(FALSE, TRUE), each = (4 * nprojyears)))
 
+stpfplot <- ggplot(filter(stpfdf, Adjusted == FALSE), aes(x=Year, y=Catch, fill=Source)) +
+  geom_bar(stat="identity", position=position_dodge()) +
+  ggtitle(paste(asap$parms$endyr, " Catch = ", round(asap$catch.obs[nyears], 0), " mt")) +
+  geom_text(aes(label=round(Catch, 0)), vjust=1.6, color="white", size=3.5, 
+            position=position_dodge(0.9)) +
+  scale_fill_manual(values = my.col[c(2, 4, 5, 6)]) +
+  theme_bw()
+print(stpfplot)
+ggsave(".\\witch\\short_term_projections_fleet.png", stpfplot)
+
+stpfplotadj <- ggplot(filter(stpfdf, Adjusted == TRUE), aes(x=Year, y=Catch, fill=Source)) +
+  geom_bar(stat="identity", position=position_dodge()) +
+  ggtitle("When catch adjustments are made to quota") +
+  geom_text(aes(label=round(Catch, 0)), vjust=1.6, color="white", size=3.5, 
+            position=position_dodge(0.9)) +
+  scale_fill_manual(values = my.col[c(2, 4, 5, 6)]) +
+  theme_bw()
+print(stpfplotadj)
+ggsave(".\\witch\\short_term_projections_fleet_adjusted.png", stpfplotadj)
