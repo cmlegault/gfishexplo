@@ -17,6 +17,7 @@ selplot <- ggplot(seldf, aes(x=Age, y=Selectivity, color=Source)) +
   geom_point() +
   geom_line() +
   expand_limits(y=0) +
+  scale_color_manual(values = my.col[c(1, 2, 3, 6)]) +
   theme_bw()
 
 print(selplot)
@@ -44,16 +45,46 @@ PlotSPRtable(asap3, a13, 5, FALSE, ".\\witch\\", "png")
 sprtab3 <- read.csv(paste0(".\\witch\\SPR.Target.Table_", asapcmultfnames[3], ".csv"))
 asap3F40 <- sprtab3$F..SPR.[sprtab3$X.SPR == 0.40]
 
+# can't calc the simple way for Young and Old cases cuz added catch has different selectivity pattern
+# replace total F matrix with fleet 1 F matrix to compute F40
+# note selectivity values saved in AgePro csv will then correspond to fleet 1 only as well
+a14 <- list(asap.name = asapfleetfnames[1])
+asap4mod <- asap4
+asap4mod$F.age <- asap4$fleet.FAA[[1]]
+PlotSPRtable(asap4mod, a14, 5, FALSE, ".\\witch\\", "png")
+sprtab4 <- read.csv(paste0(".\\witch\\SPR.Target.Table_", asapfleetfnames[1], ".csv"))
+asap4F40 <- sprtab4$F..SPR.[sprtab4$X.SPR == 0.40]
+
+a15 <- list(asap.name = asapfleetfnames[2])
+asap5mod <- asap5
+asap5mod$F.age <- asap5$fleet.FAA[[1]]
+PlotSPRtable(asap5mod, a15, 5, FALSE, ".\\witch\\", "png")
+sprtab5 <- read.csv(paste0(".\\witch\\SPR.Target.Table_", asapfleetfnames[2], ".csv"))
+asap5F40 <- sprtab5$F..SPR.[sprtab5$X.SPR == 0.40]
+
 f40df <- data.frame(Source = c("Base", sourcenames),
                     F40 = c(asapF40, asap1F40, asap2F40, asap3F40))
 
 f40plot <- ggplot(f40df, aes(x=Source, y=F40, fill=Source)) +
   geom_bar(stat="identity") +
   geom_text(aes(label=round(F40, 4)), vjust=1.6, color="white", size=3.5) + 
+  scale_fill_manual(values = my.col[c(1, 2, 3, 6)]) +
   theme_bw()
 
 print(f40plot)
 ggsave(".\\witch\\F40.png", f40plot)
+
+f40fdf <- data.frame(Source = c("Base", sourcenames[2], fleetnames),
+                     F40 = c(asapF40, asap2F40, asap4F40, asap5F40))
+
+f40fplot <- ggplot(f40fdf, aes(x=Source, y=F40, fill=Source)) +
+  geom_bar(stat="identity") +
+  geom_text(aes(label=round(F40, 4)), vjust=1.6, color="white", size=3.5) + 
+  scale_fill_manual(values = my.col[c(2, 4, 5, 6)]) +
+  theme_bw()
+
+print(f40fplot)
+ggsave(".\\witch\\F40fleet.png", f40fplot)
 
 # do short term projections under F40%
 calcShortTermProj <- function(asap.name, startNAA, recruits, Fmult, nyears){
@@ -87,6 +118,9 @@ stprhoadj <- calcShortTermProj(asapfname, Nrhoadj, mean(asap$N.age[, 1]), asapF4
 stp1 <- calcShortTermProj(asapcmultfnames[1], asap1$N.age[nyears, ], mean(asap1$N.age[, 1]), asap1F40, nprojyears)
 stp2 <- calcShortTermProj(asapcmultfnames[2], asap2$N.age[nyears, ], mean(asap2$N.age[, 1]), asap2F40, nprojyears)
 stp3 <- calcShortTermProj(asapcmultfnames[3], asap3$N.age[nyears, ], mean(asap3$N.age[, 1]), asap3F40, nprojyears)
+# rem AgePro files for Young and Old based on fleet 1, so can use them here
+stp4 <- calcShortTermProj(asapfleetfnames[1], asap4$N.age[nyears, ], mean(asap4$N.age[, 1]), asap4F40, nprojyears)
+stp5 <- calcShortTermProj(asapfleetfnames[2], asap5$N.age[nyears, ], mean(asap5$N.age[, 1]), asap5F40, nprojyears)
 
 cmult <- as.numeric(substr(asapcmultfnames, 7, 8)) / 10
 stpdf <- data.frame(Source = rep(c("Base",  sourcenames, 
@@ -101,6 +135,7 @@ stpplot <- ggplot(filter(stpdf, Adjusted == FALSE), aes(x=Year, y=Catch, fill=So
   ggtitle(paste(asap$parms$endyr, " Catch = ", round(asap$catch.obs[nyears], 0), " mt")) +
   geom_text(aes(label=round(Catch, 0)), vjust=1.6, color="white", size=3.5, 
             position=position_dodge(0.9)) +
+  scale_fill_manual(values = my.col[c(1, 2, 3, 6)]) +
   theme_bw()
 print(stpplot)
 ggsave(".\\witch\\short_term_projections.png", stpplot)
@@ -110,6 +145,7 @@ stpplotadj <- ggplot(filter(stpdf, Adjusted == TRUE), aes(x=Year, y=Catch, fill=
   ggtitle("When catch adjustments are made to quota") +
   geom_text(aes(label=round(Catch, 0)), vjust=1.6, color="white", size=3.5, 
             position=position_dodge(0.9)) +
+  scale_fill_manual(values = my.col[c(1, 2, 3, 6)]) +
   theme_bw()
 print(stpplotadj)
 ggsave(".\\witch\\short_term_projections_adjusted.png", stpplotadj)
