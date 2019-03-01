@@ -53,13 +53,13 @@ A few technical details about the Young and Old runs:
 * CV for catch in both fleets was reduced from 0.1 in the original run to 0.05 to force closer matching to the added catch
 * the phase for Fmult deviations was changed from 3 to 2 due to the added fleet having an abrupt change from 0.1 mt to high catches in 2005.
 
-Catch multipliers were searched for the two scenarios in a similar manner to above except in the new runs there is a second fleet with catch instead of just changing the amount of catch in the original fleet. This allows ASAP to remove fish according to the assumed selectivity pattern for the second fleet and still estimate selectivity for the original fleet. The retrospective peels did not consistently converge in the two new cases due to the radically different catch at age removals occuring, resulting in non-smooth changes in the Mohn's rho for SSB as the amount of missing catch increased. However, multipliers were found that essentially eliminated the retrospective pattern (denoted by the circled points). 
+Catch multipliers were searched for the two scenarios in a similar manner to above except in the new runs there is a second fleet with catch instead of just changing the amount of catch in the original fleet. This allows ASAP to remove fish according to the assumed selectivity pattern for the second fleet and still estimate selectivity for the original fleet. The 2005 Old scenario was quite similar to the 2005 Change Year due to the similarity of the assumed selectivity to that estimated for the original fleet (see plot above). The 2005 Young scenario initially reduced the Mohn's rho for SSB as catch increased, but past a doubling of the catch it started to increase. Thus, the selectivity pattern impacts the ability of missing catch to eliminate a retrospective pattern at all. The 2005 Young catch times two case is continued below as the best option, but don't forget that the retro was not fully removed for this case. 
 
 ![rhoplotfleet](./witch/rhoplotfleet.png)
 
 Click on the following links to see the selected retrospective plots for:
-* Change year 2000 https://github.com/cmlegault/gfishexplo/blob/master/witch/retro_F_SSB_R_Old2005c20.png
-* Change year 2005 https://github.com/cmlegault/gfishexplo/blob/master/witch/retro_F_SSB_R_Young2005c30.png
+* Change year 2000 https://github.com/cmlegault/gfishexplo/blob/master/witch/retro_F_SSB_R_Old_y2005c30.png
+* Change year 2005 https://github.com/cmlegault/gfishexplo/blob/master/witch/retro_F_SSB_R_Young_y2005c20.png
 
 These modifications to the catch data again changed the time series of estimates for SSB, F, and recruits, as expected. Note the 2005 Cx3 and 2005 Youngx3 scenarios are identical for the catch plot, but differ for F, recruits, and SSB, showing the importance of the selectivity pattern associated with the missing catch.
 
