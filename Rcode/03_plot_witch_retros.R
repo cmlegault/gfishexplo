@@ -137,4 +137,42 @@ shell(paste0("copy .\\rundir\\retro_F_SSB_R.png .\\witch\\retro_F_SSB_R_", asapf
 dev.off()
 
 
+#### just a check to make sure everything worked correctly (yep, it did)
+# make sure the catch in fleet 2 is being done correctly for young and old cases
+mydf <- data.frame(source = character(),
+                   year = integer(),
+                   cmult = double(),
+                   catchobs1 = double(),
+                   catchobs2 = double())
+
+nyears <- 34
+
+for (i in 1:8){
+  cmult <- my.fleet.mults[i]
+  fnamey <- paste0("Young_y2005c", cmult*10, "_000.rdat")
+  fnameo <- paste0("Old_y2005c", cmult*10, "_000.rdat")
+  asapy <- dget(paste0(".\\rundir\\", fnamey))
+  asapo <- dget(paste0(".\\rundir\\", fnameo))
+  thisdf <- data.frame(source = c(rep("Young", nyears), rep("Old", nyears)),
+                       year = rep(1982:2015, 2),
+                       cmult = cmult,
+                       catchobs1 = c(asapy$catch.obs[1,], asapo$catch.obs[1,]),
+                       catchobs2 = c(asapy$catch.obs[2,], asapo$catch.obs[2,]))
+  mydf <- rbind(mydf, thisdf)
+}
+mydf
+
+mydfplot1 <- ggplot(mydf, aes(x=year, y=catchobs1, color=as.factor(cmult))) +
+  geom_point() +
+  geom_line() +
+  facet_wrap(~source) +
+  theme_bw()
+print(mydfplot1)
+
+mydfplot2 <- ggplot(mydf, aes(x=year, y=catchobs2, color=as.factor(cmult))) +
+  geom_point() +
+  geom_line() +
+  facet_wrap(~source) +
+  theme_bw()
+print(mydfplot2)
 

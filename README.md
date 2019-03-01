@@ -61,7 +61,7 @@ Click on the following links to see the selected retrospective plots for:
 * Change year 2000 https://github.com/cmlegault/gfishexplo/blob/master/witch/retro_F_SSB_R_Old_y2005c30.png
 * Change year 2005 https://github.com/cmlegault/gfishexplo/blob/master/witch/retro_F_SSB_R_Young_y2005c20.png
 
-These modifications to the catch data again changed the time series of estimates for SSB, F, and recruits, as expected. Note the 2005 Cx3 and 2005 Youngx3 scenarios are identical for the catch plot, but differ for F, recruits, and SSB, showing the importance of the selectivity pattern associated with the missing catch.
+These modifications to the catch data again changed the time series of estimates for SSB, F, and recruits, as expected. Note the 2005 Cx3 and 2005 Oldx3 scenarios are identical for the catch plot, but differ for F, recruits, and SSB, showing the importance of the selectivity pattern associated with the missing catch.
 
 ![ftsplot](./witch/ftsplot.png)
 
