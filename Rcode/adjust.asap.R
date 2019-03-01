@@ -25,8 +25,9 @@ adjust_asap2 <- function(asap.dat,year,cmult){
                as.numeric(asap.dat$dat[names(asap.dat$dat) == "year1"]) + 
                  as.numeric(asap.dat$dat[names(asap.dat$dat) == "n_years"]) - 1 , 1)
   base.catch.mat <- catch.mat[[1]][[1]]
-  catch.mat.adj <- catch.mat[[1]][[2]] * 0 # start with all zeros
+  catch.mat.adj <- catch.mat[[1]][[2]] * 0 # start with all zeros for proportions at age
   nc <- length(catch.mat.adj[1,])
+  catch.mat.adj[, nc] <- 0.1 # set catch in all years to 0.1
   year.count <- 1:length(years)
   catch.mat.adj[year.count[years >= year],nc] <- base.catch.mat[year.count[years >= year],nc] * (cmult - 1) # note that one subtracted from cmult so has same meaning as adjust_asap (e.g., cmult=2 means total catch has doubled by including it once in real fleet and once in added fleet) - do not use cmult=1 here!
   asap.dat.adj <- asap.dat
