@@ -60,7 +60,7 @@ asapfleetfnames <- c(paste0("Young_y", bestresfleet$Year[bestresfleet$Source == 
                             "c", bestresfleet$cmult[bestresfleet$Source == "2005 Old"] * 10))
 fleetnames <- paste0(bestresfleet$Source[2:3], "x", bestresfleet$cmult[2:3])
 
-# copy the four base rdat files to witch directory
+# copy the rdat files to witch directory
 shell(paste0("copy .\\rundir\\", asapfname, "_000.rdat .\\witch\\"))
 shell(paste0("copy .\\rundir\\", asapcmultfnames[1], "_000.rdat .\\witch\\"))
 shell(paste0("copy .\\rundir\\", asapcmultfnames[2], "_000.rdat .\\witch\\"))

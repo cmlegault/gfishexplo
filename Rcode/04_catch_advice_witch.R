@@ -24,7 +24,7 @@ print(selplot)
 ggsave(".\\witch\\selplot.png", selplot)
 
 # calculate F40% from ASAPplot
-# do it for each of the four asap runs
+# do it for each of the asap runs
 a1 <- list(asap.name = asapfname)
 PlotSPRtable(asap, a1, 5, FALSE, ".\\witch\\", "png")
 sprtab <- read.csv(paste0(".\\witch\\SPR.Target.Table_", asapfname, ".csv"))
