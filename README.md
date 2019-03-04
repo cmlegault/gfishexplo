@@ -3,7 +3,7 @@ Groundfish Explorations
 
 ## Question: can adding recent catch allow increase in quota? Yes, maybe.
 
-Premise is that missing catch, due to underestimated discards, discarding of legal-sized fish, and improperly labelled landings, could be the main source of retrospective patterns in recent groundfish stock assessments. This work explores this concept with the hypothesis that ABCs could be increased if this is true to offset management measures such as 100% observer coverage or dockside monitoring. However, the amount of increase is not equal to the amount of missing catch and may depend on the age composition of the missing catch. 
+Premise is that missing catch, due to underestimated discards, discarding of legal-sized fish, and improperly labelled landings, could be the main source of retrospective patterns in recent groundfish stock assessments. This work explores this concept with the hypothesis that ABCs could be increased if this is true to offset management measures such as 100% observer coverage or dockside monitoring. However, the amount of increase is not equal to the amount of missing catch and depends on the age composition of the missing catch. 
 
 ## What was done?
 
@@ -65,26 +65,27 @@ These modifications to the catch data again changed the time series of estimates
 
 ![ftsplot](./witch/ftsplot.png)
 
-Add selectivity text and plot here...
+The selectivity patterns for the original fleet are generally similar to the base case (solid lines), with the Old scenario differing more than the Young scenario. The overall selectivity, including the missing catch, causes large changes in both scenarios (dashed lines). 
 
-Add F40 text here...
+![selfleet](./witch/selfleetplot.png)
+
+The assumption is that the missing catch is an artifact that should be removed, so only the original fleet selectivity pattern is used to compute F40, resulting in similar values across the scenarios. The lower F40 for the Old scenario is offset by the increased selectivity of younger ages seen above.
 
 ![F40fleet](./witch/F40fleet.png)
 
-Add short term projections text here...
+Due to the large differences in stock size and age structure in the terminal year, the short term projections under F40 for the Old and Young scenarios are quite different from the Base projections. Comparing the Old scenario with the missing catch having the same selectivity as the reported catch shows a larger potential for increasing the ABC, if the missing catch is eliminated. However, the Young scenario results in essentially the same catch advice as the rho adjusted Base scenario, indicating no ability to increase the ABC if the missing catch is eliminated. But remember that the Young scenario did not remove the retrospective pattern, so may not be accepted as a basis for management advice without rho adjustment, which would reduce the catch advice even more.
 
 ![short_term_projections_fleet](./witch/short_term_projections_fleet.png)
 
-Add adjusted short term projections text here...
+Adjusting for the missing catch brings the catches more in alignment, as seen above.  
 
 ![short_term_projections_fleet_adjusted](./witch/short_term_projections_fleet_adjusted.png)
 
 ## Concluding thoughts
 
 * The witch flounder example demonstrates that there are multiple ways to eliminate the retrospective pattern due to missing catch, with the amount of missing catch depending on when the change starts and the age distribution of the missing catch relative to the observed catch. Generally, there is some potential to increase the quota under the assumption that missing catch was the only source of the retrospective pattern, but the amount of increase is generally less than the amount of catch needed to eliminate the retrospective, and the amount of catch varies depending on when it starts and its age distribution. So there is not a simple relationship that can be used between the size fo the retrospective pattern observed and the amount of quota increase that is possible.
-* Returning the witch flounder catch time series, there are some obvious spikes and unusual patterns in all three catch multiplier scenarios relative to the base case. If additional information was available, or it was thought that large sudden changes in catch were unlikely, then it might be possible to select a single year to assume when the change in catch occurred. Alternatively, and more likely, there could be some sort of ramp up into the missing catch associated with missing catch starting slow and building to a large amount over time as incentives for it increased. This would further complicate the relationship between the amount of retrospective pattern and whether additional quota could be assocaited with eliminating missing catch.
-* As populations decrease, the variability in the population associated with natural mortality would most likely increase, making natural mortality changes a possible source of retrospective patterns as well. If natural mortality is in fact the only source of the retrospective pattern, then there is no basis for increasing the quota due to eliminating the missing catch.
+* Returning to the witch flounder catch time series, there are some obvious spikes and unusual patterns in all three catch multiplier scenarios relative to the base case. If additional information was available, or it was thought that large sudden changes in catch were unlikely, then it might be possible to select a single year to assume when the change in catch occurred. Alternatively, and more likely, there could be some sort of ramp associated with missing catch starting slow and building to a large amount over time as incentives for it increased. This would further complicate the relationship between the amount of retrospective pattern and whether additional quota could be assocaited with eliminating missing catch.
+* As populations decrease, the variability in the population associated with natural mortality would most likely increase, making natural mortality changes a possible source of retrospective patterns as well. If natural mortality is in fact the only source of the retrospective pattern, then there is no basis for increasing the quota due to eliminating the missing catch. Issues with which ages are impacted by the changes in natural mortality would need to be addressed as well.
 
 Note to self: 
 * think about repeating for other stocks
-* figure out what to keep in witch dir and clean out rundir (save somewhere until sure don't need things)
