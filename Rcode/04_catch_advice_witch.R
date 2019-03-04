@@ -7,7 +7,7 @@ source(".\\Rcode\\03_plot_witch_retros.R")
 nages <- asap$parms$nages
 ages <- seq(1, nages)
 seldf <- data.frame(Age = rep(ages, 4),
-                    Source = rep(rep(c("Base", sourcenames), each=nages), 4),
+                    Source = rep(c("Base", sourcenames), each=nages),
                     Selectivity = c(asap$fleet.sel.mats[[1]][nyears, ],
                                     asap1$fleet.sel.mats[[1]][nyears, ],
                                     asap2$fleet.sel.mats[[1]][nyears, ],
@@ -22,6 +22,30 @@ selplot <- ggplot(seldf, aes(x=Age, y=Selectivity, color=Source)) +
 
 print(selplot)
 ggsave(".\\witch\\selplot.png", selplot)
+
+total4 <- asap4$F.age[nyears, ] / max(asap4$F.age[nyears, ])
+total5 <- asap5$F.age[nyears, ] / max(asap5$F.age[nyears, ])
+my.lines <- c("solid", "dashed", "solid", "dashed", "solid")
+selfleetdf <- data.frame(Age = rep(ages, 5),
+                         Source = rep(c("Base", 
+                                        paste(fleetnames, "Orig Fleet"), 
+                                        paste(fleetnames, "Total")), each=nages),
+                         Selectivity = c(asap$fleet.sel.mats[[1]][nyears, ],
+                                         asap4$fleet.sel.mats[[1]][nyears, ],
+                                         asap5$fleet.sel.mats[[1]][nyears, ],
+                                         total4,
+                                         total5))
+
+selfleetplot <- ggplot(selfleetdf, aes(x=Age, y=Selectivity, group=Source)) +
+  geom_point(aes(color=Source)) +
+  geom_line(aes(linetype=Source, color=Source)) +
+  expand_limits(y=0) +
+  scale_color_manual(values = my.col[c(5, 5, 4, 4, 6)]) +
+  scale_linetype_manual(values = my.lines) +
+  theme_bw()
+
+print(selfleetplot)
+ggsave(".\\witch\\selfleetplot.png", selfleetplot)
 
 # calculate F40% from ASAPplot
 # do it for each of the asap runs
