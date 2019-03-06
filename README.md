@@ -1,6 +1,3 @@
-# gfishexplo
-Groundfish Explorations
-
 ## Question: can adding recent catch allow increase in quota? Yes, maybe.
 
 The premise of this exercise is that if missing catch is the source of the groundfish retrospective patterns, and this missing catch was added into the assessment, the quota could be increased under the assumption that the missing catch was converted to observed catch.  For example, if the missing catch was due to changes in discarding behavior when observers were on board, then 100% observer coverage would eliminate this missing catch. Results for a recent groundfish example demonstrate the potential of this approach, but also show a number of challenges including the multiple ways that missing catch can be used to eliminate a retrospective pattern and the consequent multiple possible changes in ABC. In all cases, the potential increase in quota is less than the amount of missing catch, so there is not a simple rule that can be applied. In some cases, there may not even be an increase in quota possible. The danger of this approach is that if missing catch continues in the future when it is assumed to stop, then the increased quota will almost certainly result in overfishing.
