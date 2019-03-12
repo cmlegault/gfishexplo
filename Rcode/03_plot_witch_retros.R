@@ -9,10 +9,11 @@ library("ggplot2")
 library("dplyr")
 
 # to use consistent colors throughout
-my.col <- hue_pal()(6)
+my.col <- c(hue_pal()(6), "gray25", "gray50", "gray75")
 
 res <- read.csv(".\\witch\\witch_retro_res.csv")
 resfleet <- read.csv(".\\witch\\witch_retro_res_fleet.csv")
+resm <- read.csv(".\\witch\\witch_retro_res_m.csv")
 
 bestres <- res %>%
   mutate(absrho = abs(SSBrho)) %>%
@@ -22,6 +23,11 @@ bestres <- res %>%
 bestresfleet <- resfleet %>%
   mutate(absrho = abs(SSBrho)) %>%
   group_by(Source) %>%
+  filter(absrho == min(absrho))
+
+bestresm <- resm %>%
+  mutate(absrho = abs(SSBrho)) %>%
+  group_by(ChangeYear) %>%
   filter(absrho == min(absrho))
 
 # show SSB rho as function of catch multiplier for the three change years
@@ -50,6 +56,19 @@ rhoplotfleet <- ggplot(filter(resfleet, Source != "2005 Cx3"), aes(x=cmult, y=SS
 print(rhoplotfleet)
 ggsave(".\\witch\\rhoplotfleet.png", rhoplotfleet)
 
+rhoplotm <- ggplot(resm, aes(x=Mmult, y=SSBrho, color=as.factor(ChangeYear))) +
+  geom_point() +
+  geom_line() +
+  geom_point(data = bestresm, shape = 1, size=5) +
+  geom_hline(yintercept = 0, linetype="dashed") +
+  labs(color="Change Year") +
+  scale_color_manual(values = my.col[c(7, 8, 9)]) +
+  xlab("Catch Multiplier") +
+  theme_bw()
+
+print(rhoplotm)
+ggsave(".\\witch\\rhoplotm.png", rhoplotm)
+
 # identify the asap runs
 asapfname <- "y2010c10m10"
 asapcmultfnames <- paste0("y", bestres$ChangeYear, "c", bestres$Cmult * 10, "m10")
@@ -59,6 +78,8 @@ asapfleetfnames <- c(paste0("Young_y", bestresfleet$Year[bestresfleet$Source == 
                      paste0("Old_y", bestresfleet$Year[bestresfleet$Source == "2005 Old"],
                             "c", bestresfleet$cmult[bestresfleet$Source == "2005 Old"] * 10))
 fleetnames <- paste0(bestresfleet$Source[2:3], "x", bestresfleet$cmult[2:3])
+asapmmultfnames <- paste0("y", bestresm$ChangeYear, "c10m", bestresm$Mmult * 10)
+mnames <- paste0(bestresm$ChangeYear, " Mx", bestresm$Mmult)
 
 # copy the rdat files to witch directory
 shell(paste0("copy .\\rundir\\", asapfname, "_000.rdat .\\witch\\"))
@@ -67,6 +88,7 @@ shell(paste0("copy .\\rundir\\", asapcmultfnames[2], "_000.rdat .\\witch\\"))
 shell(paste0("copy .\\rundir\\", asapcmultfnames[3], "_000.rdat .\\witch\\"))
 shell(paste0("copy .\\rundir\\", asapfleetfnames[1], "_000.rdat .\\witch\\"))
 shell(paste0("copy .\\rundir\\", asapfleetfnames[2], "_000.rdat .\\witch\\"))
+shell(paste0("copy .\\rundir\\", asapmmultfnames[1], "_000.rdat .\\witch\\"))
 
 # read the rdat files
 asap <- dget(paste0(".\\witch\\", asapfname, "_000.rdat"))
@@ -75,6 +97,7 @@ asap2 <- dget(paste0(".\\witch\\", asapcmultfnames[2], "_000.rdat"))
 asap3 <- dget(paste0(".\\witch\\", asapcmultfnames[3], "_000.rdat"))
 asap4 <- dget(paste0(".\\witch\\", asapfleetfnames[1], "_000.rdat"))
 asap5 <- dget(paste0(".\\witch\\", asapfleetfnames[2], "_000.rdat"))
+asap6 <- dget(paste0(".\\witch\\", asapmmultfnames[1], "_000.rdat"))
 
 # plot time series of catch, F, recruits, and SSB
 years <- seq(asap$parms$styr, asap$parms$endyr)
@@ -120,6 +143,26 @@ ftsplot <- ggplot(fdf, aes(x=Year, y=value, color=Source)) +
 print(ftsplot)
 ggsave(".\\witch\\ftsplot.png", ftsplot)
 
+mdf <- data.frame(Year = rep(years, 8),
+                  Source = rep(rep(c("Base", mnames), each=nyears), 4), 
+                  metric = rep(c("SSB", "F", "Recruits", "Catch"), each = (nyears * 2)),
+                  value = c(asap$SSB, asap6$SSB, 
+                            asap$F.report, asap6$F.report,
+                            asap$N.age[,1], asap6$N.age[,1],
+                            asap$catch.obs, asap6$catch.obs))
+
+mtsplot <- ggplot(mdf, aes(x=Year, y=value, color=Source)) +
+  geom_point() +
+  geom_line() +
+  expand_limits(y=0) +
+  facet_wrap(~ metric, scales="free_y") +
+  scale_color_manual(values = my.col[c(6, 7)]) +
+  theme_bw() +
+  theme(legend.position = "bottom")
+
+print(mtsplot)
+ggsave(".\\witch\\mtsplot.png", mtsplot)
+
 # get retro plots from ASAPplot 
 windows(record = TRUE)
 PlotRetroWrapper(".\\rundir", paste0(asapfname, "_000"), asap, TRUE, ".\\rundir\\", "png")
@@ -134,6 +177,8 @@ PlotRetroWrapper(".\\rundir", paste0(asapfleetfnames[1], "_000"), asap4, TRUE, "
 shell(paste0("copy .\\rundir\\retro_F_SSB_R.png .\\witch\\retro_F_SSB_R_", asapfleetfnames[1],".png"))
 PlotRetroWrapper(".\\rundir", paste0(asapfleetfnames[2], "_000"), asap5, TRUE, ".\\rundir\\", "png")
 shell(paste0("copy .\\rundir\\retro_F_SSB_R.png .\\witch\\retro_F_SSB_R_", asapfleetfnames[2],".png"))
+PlotRetroWrapper(".\\rundir", paste0(asapmmultfnames[1], "_000"), asap6, TRUE, ".\\rundir\\", "png")
+shell(paste0("copy .\\rundir\\retro_F_SSB_R.png .\\witch\\retro_F_SSB_R_", asapmmultfnames[1],".png"))
 dev.off()
 
 

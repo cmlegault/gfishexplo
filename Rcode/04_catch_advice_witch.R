@@ -47,6 +47,21 @@ selfleetplot <- ggplot(selfleetdf, aes(x=Age, y=Selectivity, group=Source)) +
 print(selfleetplot)
 ggsave(".\\witch\\selfleetplot.png", selfleetplot)
 
+selmdf <- data.frame(Age = rep(ages, 2),
+                     Source = rep(c("Base", mnames), each=nages),
+                     Selectivity = c(asap$fleet.sel.mats[[1]][nyears, ],
+                                     asap6$fleet.sel.mats[[1]][nyears, ]) )
+
+selmplot <- ggplot(selmdf, aes(x=Age, y=Selectivity, color=Source)) +
+  geom_point() +
+  geom_line() +
+  expand_limits(y=0) +
+  scale_color_manual(values = my.col[c(6, 7)]) +
+  theme_bw()
+
+print(selmplot)
+ggsave(".\\witch\\selmplot.png", selmplot)
+
 # calculate F40% from ASAPplot
 # do it for each of the asap runs
 a1 <- list(asap.name = asapfname)
@@ -86,6 +101,15 @@ PlotSPRtable(asap5mod, a15, 5, FALSE, ".\\witch\\", "png")
 sprtab5 <- read.csv(paste0(".\\witch\\SPR.Target.Table_", asapfleetfnames[2], ".csv"))
 asap5F40 <- sprtab5$F..SPR.[sprtab5$X.SPR == 0.40]
 
+# replace M with original M value for F40 calculations
+a16 <- list(asap.name = asapmmultfnames[1])
+asap6mod <- asap6
+asap6mod$M.age <- asap$M.age
+PlotSPRtable(asap6mod, a16, 5, FALSE, ".\\witch\\", "png")
+sprtab6 <- read.csv(paste0(".\\witch\\SPR.Target.Table_", asapmmultfnames[1], ".csv"))
+asap6F40 <- sprtab6$F..SPR.[sprtab6$X.SPR == 0.40]
+
+# create F40 data frames and plot against each other
 f40df <- data.frame(Source = c("Base", sourcenames),
                     F40 = c(asapF40, asap1F40, asap2F40, asap3F40))
 
@@ -110,6 +134,7 @@ f40fplot <- ggplot(f40fdf, aes(x=Source, y=F40, fill=Source)) +
 print(f40fplot)
 ggsave(".\\witch\\F40fleet.png", f40fplot)
 
+f40mdf <- "hereherehere"
 # do short term projections under F40%
 calcShortTermProj <- function(asap.name, startNAA, recruits, Fmult, nyears){
   nages <- length(startNAA)

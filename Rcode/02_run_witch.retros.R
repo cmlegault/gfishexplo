@@ -99,6 +99,20 @@ resfleet
 write.csv(resfleet, file="witch_retro_res_fleet.csv", row.names=FALSE)
 write.csv(resfleet, file="..\\witch\\witch_retro_res_fleet.csv", row.names=FALSE)
 
+################################################
+# run increase M case for comparison
+resm2 <- run_retro_mults(asap.fname=my.asap.fname,
+                         n.peels=n.peels,
+                         year.range=my.year.range2,
+                         cmult.vals=1,
+                         mmult.vals=my.mults,
+                         save.files=TRUE)
+ifelse(min(abs(resm2[,4])) < 0.05, "OK", "Need more runs")
+write.csv(resm2, file="witch_retro_res_m.csv", row.names=FALSE)
+write.csv(resm2, file="..\\witch\\witch_retro_res_m.csv", row.names=FALSE)
+
+################################################
+
 # return working directory to starting directory
 setwd(base.dir)
 
