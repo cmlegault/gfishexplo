@@ -47,16 +47,18 @@ selfleetplot <- ggplot(selfleetdf, aes(x=Age, y=Selectivity, group=Source)) +
 print(selfleetplot)
 ggsave(".\\witch\\selfleetplot.png", selfleetplot)
 
-selmdf <- data.frame(Age = rep(ages, 2),
+selmdf <- data.frame(Age = rep(ages, 4),
                      Source = rep(c("Base", mnames), each=nages),
                      Selectivity = c(asap$fleet.sel.mats[[1]][nyears, ],
-                                     asap6$fleet.sel.mats[[1]][nyears, ]) )
+                                     asap6$fleet.sel.mats[[1]][nyears, ],
+                                     asap7$fleet.sel.mats[[1]][nyears, ],
+                                     asap8$fleet.sel.mats[[1]][nyears, ]) )
 
 selmplot <- ggplot(selmdf, aes(x=Age, y=Selectivity, color=Source)) +
   geom_point() +
   geom_line() +
   expand_limits(y=0) +
-  scale_color_manual(values = my.col[c(6, 7)]) +
+  scale_color_manual(values = my.col[c(7, 8, 9, 6)]) +
   theme_bw()
 
 print(selmplot)
@@ -101,13 +103,31 @@ PlotSPRtable(asap5mod, a15, 5, FALSE, ".\\witch\\", "png")
 sprtab5 <- read.csv(paste0(".\\witch\\SPR.Target.Table_", asapfleetfnames[2], ".csv"))
 asap5F40 <- sprtab5$F..SPR.[sprtab5$X.SPR == 0.40]
 
-# replace M with original M value for F40 calculations
+# replace mmult modified M with original M value for F40 calculations
+# then run PlotSPRtable function with mmult values for use in short term projections
 a16 <- list(asap.name = asapmmultfnames[1])
 asap6mod <- asap6
 asap6mod$M.age <- asap$M.age
 PlotSPRtable(asap6mod, a16, 5, FALSE, ".\\witch\\", "png")
 sprtab6 <- read.csv(paste0(".\\witch\\SPR.Target.Table_", asapmmultfnames[1], ".csv"))
 asap6F40 <- sprtab6$F..SPR.[sprtab6$X.SPR == 0.40]
+PlotSPRtable(asap6, a16, 5, FALSE, ".\\witch\\", "png")
+
+a17 <- list(asap.name = asapmmultfnames[2])
+asap7mod <- asap7
+asap7mod$M.age <- asap$M.age
+PlotSPRtable(asap7mod, a17, 5, FALSE, ".\\witch\\", "png")
+sprtab7 <- read.csv(paste0(".\\witch\\SPR.Target.Table_", asapmmultfnames[2], ".csv"))
+asap7F40 <- sprtab7$F..SPR.[sprtab7$X.SPR == 0.40]
+PlotSPRtable(asap7, a17, 5, FALSE, ".\\witch\\", "png")
+
+a18 <- list(asap.name = asapmmultfnames[3])
+asap8mod <- asap8
+asap8mod$M.age <- asap$M.age
+PlotSPRtable(asap8mod, a18, 5, FALSE, ".\\witch\\", "png")
+sprtab8 <- read.csv(paste0(".\\witch\\SPR.Target.Table_", asapmmultfnames[3], ".csv"))
+asap8F40 <- sprtab8$F..SPR.[sprtab8$X.SPR == 0.40]
+PlotSPRtable(asap8, a18, 5, FALSE, ".\\witch\\", "png")
 
 # create F40 data frames and plot against each other
 f40df <- data.frame(Source = c("Base", sourcenames),
@@ -134,7 +154,18 @@ f40fplot <- ggplot(f40fdf, aes(x=Source, y=F40, fill=Source)) +
 print(f40fplot)
 ggsave(".\\witch\\F40fleet.png", f40fplot)
 
-f40mdf <- "hereherehere"
+f40mdf <- data.frame(Source = c("Base", mnames),
+                     F40 = c(asapF40, asap6F40, asap7F40, asap8F40))
+
+f40mplot <- ggplot(f40mdf, aes(x=Source, y=F40, fill=Source)) +
+  geom_bar(stat="identity") +
+  geom_text(aes(label=round(F40, 4)), vjust=1.6, color="white", size=3.5) + 
+  scale_fill_manual(values = my.col[c(7, 8, 9, 6)]) +
+  theme_bw()
+
+print(f40mplot)
+ggsave(".\\witch\\F40m.png", f40mplot)
+
 # do short term projections under F40%
 calcShortTermProj <- function(asap.name, startNAA, recruits, Fmult, nyears){
   nages <- length(startNAA)
@@ -170,6 +201,9 @@ stp3 <- calcShortTermProj(asapcmultfnames[3], asap3$N.age[nyears, ], mean(asap3$
 # rem AgePro files for Young and Old based on fleet 1, so can use them here
 stp4 <- calcShortTermProj(asapfleetfnames[1], asap4$N.age[nyears, ], mean(asap4$N.age[, 1]), asap4F40, nprojyears)
 stp5 <- calcShortTermProj(asapfleetfnames[2], asap5$N.age[nyears, ], mean(asap5$N.age[, 1]), asap5F40, nprojyears)
+stp6 <- calcShortTermProj(asapmmultfnames[1], asap6$N.age[nyears, ], mean(asap6$N.age[, 1]), asap6F40, nprojyears)
+stp7 <- calcShortTermProj(asapmmultfnames[2], asap7$N.age[nyears, ], mean(asap7$N.age[, 1]), asap7F40, nprojyears)
+stp8 <- calcShortTermProj(asapmmultfnames[3], asap8$N.age[nyears, ], mean(asap8$N.age[, 1]), asap8F40, nprojyears)
 
 cmult <- as.numeric(substr(asapcmultfnames, 7, 8)) / 10
 stpdf <- data.frame(Source = rep(c("Base",  sourcenames, 
@@ -227,3 +261,19 @@ stpfplotadj <- ggplot(filter(stpfdf, Adjusted == TRUE), aes(x=Year, y=Catch, fil
   theme_bw()
 print(stpfplotadj)
 ggsave(".\\witch\\short_term_projections_fleet_adjusted.png", stpfplotadj)
+
+# M short term projection plot
+stpmdf <- data.frame(Source = rep(c("Base",  "Base rho adj", mnames), each=nprojyears),
+                     Year = rep(asap$parms$endyr + 1:nprojyears, 5),
+                     Catch = c(stp, stprhoadj, stp6, stp7, stp8))
+
+stpmplot <- ggplot(stpmdf, aes(x=Year, y=Catch, fill=Source)) +
+  geom_bar(stat="identity", position=position_dodge()) +
+  ggtitle(paste(asap$parms$endyr, " Catch = ", round(asap$catch.obs[nyears], 0), " mt")) +
+  geom_text(aes(label=round(Catch, 0)), vjust=1.6, color="white", size=3.5, 
+            position=position_dodge(0.9)) +
+  scale_fill_manual(values = c(my.col[c(7, 8, 9, 6)], "pink")) +
+  theme_bw()
+print(stpmplot)
+ggsave(".\\witch\\short_term_projections_m.png", stpmplot)
+
