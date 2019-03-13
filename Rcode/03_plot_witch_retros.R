@@ -44,10 +44,10 @@ rhoplot <- ggplot(res, aes(x=Cmult, y=SSBrho, color=as.factor(ChangeYear))) +
 print(rhoplot)
 ggsave(".\\witch\\rhoplot.png", rhoplot)
 
-rhoplotfleet <- ggplot(filter(resfleet, Source != "2005 Cx3"), aes(x=cmult, y=SSBrho, color=Source)) +
+rhoplotfleet <- ggplot(filter(resfleet, Source != "2005 Cmult"), aes(x=cmult, y=SSBrho, color=Source)) +
   geom_point() +
   geom_line() +
-  geom_point(data = filter(bestresfleet, Source != "2005 Cx3"), shape = 1, size=5) +
+  geom_point(data = filter(bestresfleet, Source != "2005 Cmult"), shape = 1, size=5) +
   scale_color_manual(values = my.col[c(4, 5)]) +
   geom_hline(yintercept = 0, linetype="dashed") +
   xlab("Catch Multiplier") +
@@ -89,6 +89,8 @@ shell(paste0("copy .\\rundir\\", asapcmultfnames[3], "_000.rdat .\\witch\\"))
 shell(paste0("copy .\\rundir\\", asapfleetfnames[1], "_000.rdat .\\witch\\"))
 shell(paste0("copy .\\rundir\\", asapfleetfnames[2], "_000.rdat .\\witch\\"))
 shell(paste0("copy .\\rundir\\", asapmmultfnames[1], "_000.rdat .\\witch\\"))
+shell(paste0("copy .\\rundir\\", asapmmultfnames[2], "_000.rdat .\\witch\\"))
+shell(paste0("copy .\\rundir\\", asapmmultfnames[3], "_000.rdat .\\witch\\"))
 
 # read the rdat files
 asap <- dget(paste0(".\\witch\\", asapfname, "_000.rdat"))
@@ -98,6 +100,8 @@ asap3 <- dget(paste0(".\\witch\\", asapcmultfnames[3], "_000.rdat"))
 asap4 <- dget(paste0(".\\witch\\", asapfleetfnames[1], "_000.rdat"))
 asap5 <- dget(paste0(".\\witch\\", asapfleetfnames[2], "_000.rdat"))
 asap6 <- dget(paste0(".\\witch\\", asapmmultfnames[1], "_000.rdat"))
+asap7 <- dget(paste0(".\\witch\\", asapmmultfnames[2], "_000.rdat"))
+asap8 <- dget(paste0(".\\witch\\", asapmmultfnames[3], "_000.rdat"))
 
 # plot time series of catch, F, recruits, and SSB
 years <- seq(asap$parms$styr, asap$parms$endyr)
@@ -143,20 +147,20 @@ ftsplot <- ggplot(fdf, aes(x=Year, y=value, color=Source)) +
 print(ftsplot)
 ggsave(".\\witch\\ftsplot.png", ftsplot)
 
-mdf <- data.frame(Year = rep(years, 8),
-                  Source = rep(rep(c("Base", mnames), each=nyears), 4), 
-                  metric = rep(c("SSB", "F", "Recruits", "Catch"), each = (nyears * 2)),
-                  value = c(asap$SSB, asap6$SSB, 
-                            asap$F.report, asap6$F.report,
-                            asap$N.age[,1], asap6$N.age[,1],
-                            asap$catch.obs, asap6$catch.obs))
+mdf <- data.frame(Year = rep(years, 16),
+                  Source = rep(rep(c("Base", mnames), each=nyears), 8), 
+                  metric = rep(c("SSB", "F", "Recruits", "Catch"), each = (nyears * 4)),
+                  value = c(asap$SSB, asap6$SSB, asap7$SSB, asap8$SSB,  
+                            asap$F.report, asap6$F.report, asap7$F.report, asap8$F.report,
+                            asap$N.age[,1], asap6$N.age[,1], asap7$N.age[,1], asap8$N.age[,1],
+                            asap$catch.obs, asap6$catch.obs, asap7$catch.obs, asap8$catch.obs))
 
 mtsplot <- ggplot(mdf, aes(x=Year, y=value, color=Source)) +
   geom_point() +
   geom_line() +
   expand_limits(y=0) +
   facet_wrap(~ metric, scales="free_y") +
-  scale_color_manual(values = my.col[c(6, 7)]) +
+  scale_color_manual(values = my.col[c(7, 8, 9, 6)]) +
   theme_bw() +
   theme(legend.position = "bottom")
 
@@ -179,6 +183,10 @@ PlotRetroWrapper(".\\rundir", paste0(asapfleetfnames[2], "_000"), asap5, TRUE, "
 shell(paste0("copy .\\rundir\\retro_F_SSB_R.png .\\witch\\retro_F_SSB_R_", asapfleetfnames[2],".png"))
 PlotRetroWrapper(".\\rundir", paste0(asapmmultfnames[1], "_000"), asap6, TRUE, ".\\rundir\\", "png")
 shell(paste0("copy .\\rundir\\retro_F_SSB_R.png .\\witch\\retro_F_SSB_R_", asapmmultfnames[1],".png"))
+PlotRetroWrapper(".\\rundir", paste0(asapmmultfnames[2], "_000"), asap7, TRUE, ".\\rundir\\", "png")
+shell(paste0("copy .\\rundir\\retro_F_SSB_R.png .\\witch\\retro_F_SSB_R_", asapmmultfnames[2],".png"))
+PlotRetroWrapper(".\\rundir", paste0(asapmmultfnames[3], "_000"), asap8, TRUE, ".\\rundir\\", "png")
+shell(paste0("copy .\\rundir\\retro_F_SSB_R.png .\\witch\\retro_F_SSB_R_", asapmmultfnames[3],".png"))
 dev.off()
 
 
