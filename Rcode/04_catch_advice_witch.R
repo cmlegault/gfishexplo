@@ -277,3 +277,11 @@ stpmplot <- ggplot(stpmdf, aes(x=Year, y=Catch, fill=Source)) +
 print(stpmplot)
 ggsave(".\\witch\\short_term_projections_m.png", stpmplot)
 
+# make pdf of mmult results so can link to the collection easily in README.md
+pdf(file = ".\\witch\\mmult.pdf", onefile = TRUE)
+print(rhoplotm)
+print(mtsplot)
+print(selmplot)
+print(f40mplot)
+print(stpmplot)
+dev.off()

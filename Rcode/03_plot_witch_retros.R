@@ -63,7 +63,8 @@ rhoplotm <- ggplot(resm, aes(x=Mmult, y=SSBrho, color=as.factor(ChangeYear))) +
   geom_hline(yintercept = 0, linetype="dashed") +
   labs(color="Change Year") +
   scale_color_manual(values = my.col[c(7, 8, 9)]) +
-  xlab("Catch Multiplier") +
+  xlab("Natural Mortality Multiplier") +
+  ggtitle("Original Natural Mortality = 0.15") +
   theme_bw()
 
 print(rhoplotm)
