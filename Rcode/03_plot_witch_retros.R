@@ -10,6 +10,7 @@ library("dplyr")
 
 # to use consistent colors throughout
 my.col <- c(hue_pal()(6), "gray25", "gray50", "gray75")
+# show_col(my.col) # uncomment to see what the colors look like
 
 res <- read.csv(".\\witch\\witch_retro_res.csv")
 resfleet <- read.csv(".\\witch\\witch_retro_res_fleet.csv")
